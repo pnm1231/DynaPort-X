@@ -29,7 +29,7 @@ class Bootstrap {
         if(!isset($uri->controller)){
             $uri->controller = 'Index_Controller';
         }else{
-             $uri->controller.= '_Controller';
+             $uri->controller = ucfirst($uri->controller).'_Controller';
         }
         $controller = __autoload($uri->controller);
         
