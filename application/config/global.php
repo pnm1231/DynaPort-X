@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the DynaPort X package.
+ *
+ * (c) Prasad Nayanajith <prasad.n@dynamiccodes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ * 
+ */
+
 /***************
  * GLOBAL
  ***************/
@@ -79,7 +89,7 @@ define('HASH_ALGO','md5');
 // The salt you want to add.
 // Use differnent salts for different applications.
 // IMPORTANT: Make sure you change this only once, at the beginning.
-// Once you change this, previously hashed contents (passwords) won't match anymore.
+// Once you change this, previously hashed strings won't match anymore.
 define('HASH_SALT','MySalt');
 
 

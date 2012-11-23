@@ -1,5 +1,15 @@
 <?php
 
+/*
+ * This file is part of the DynaPort X package.
+ *
+ * (c) Prasad Nayanajith <prasad.n@dynamiccodes.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ * 
+ */
+
 class Error_Controller extends Controller {
     
     function __construct($msg=false,$errorNo=0,$msgExplained=''){
