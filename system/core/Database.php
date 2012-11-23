@@ -6,7 +6,11 @@ class Database extends PDO {
     private $_affectedRows;
 
     public function __construct($DB_TYPE,$DB_HOST,$DB_NAME,$DB_USER,$DB_PASS){
-        parent::__construct($DB_TYPE.':host='.$DB_HOST.';dbname='.$DB_NAME,$DB_USER,$DB_PASS);
+        try{
+            parent::__construct($DB_TYPE.':host='.$DB_HOST.';dbname='.$DB_NAME,$DB_USER,$DB_PASS);
+        }catch(Exception $e){
+            new Error_Controller('Error with the database connection ',500,$e);
+        }
     }
 
     /**
