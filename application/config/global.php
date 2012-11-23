@@ -6,7 +6,7 @@
 
 // The URL which can be accessed to framwork's main file index.php
 // DO NOT add a trailing slash.
-define('GLBL_URL','http://localhost/DynaPort-X');
+define('GLBL_URL','http://localhost/MVC2');
 
 // Display only Errors while hiding notices and warnings
 //error_reporting(E_ALL ^ E_WARNING ^ E_NOTICE);
@@ -30,10 +30,10 @@ define('DB_TYPE','mysql');
 define('DB_HOST','localhost');
 
 // The name of the database you are going to access.
-define('DB_NAME','mvc');
+define('DB_NAME','');
 
 // Username of the connection/database.
-define('DB_USER','root');
+define('DB_USER','');
 
 // Password of the connection/database.
 define('DB_PASS','');
