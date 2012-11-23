@@ -6,12 +6,12 @@
 
 // The URL which can be accessed to framwork's main file index.php
 // DO NOT add a trailing slash.
-define('GLBL_URL','http://localhost/MVC2');
+define('GLBL_URL','http://localhost/DynaPort-X');
 
 // Display only Errors while hiding notices and warnings
 //error_reporting(E_ALL ^ E_WARNING ^ E_NOTICE);
-error_reporting(E_ALL);
 //error_reporting(E_STRICT);
+error_reporting(E_ALL);
 
 // Timezone
 date_default_timezone_set('Asia/Colombo');
