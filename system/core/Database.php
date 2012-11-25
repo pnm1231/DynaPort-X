@@ -19,7 +19,7 @@ class Database extends PDO {
         try{
             parent::__construct($DB_TYPE.':host='.$DB_HOST.';dbname='.$DB_NAME,$DB_USER,$DB_PASS);
         }catch(Exception $e){
-            new Error_Controller('Error with the database connection ',500,$e);
+            new Error_Controller('Error with the database connection',500,$e);
         }
     }
 
@@ -54,7 +54,7 @@ class Database extends PDO {
      * @param constant $fetchMode A PDO Fetch mode
      * @return mixed An array with results
      */
-    public function select($fields,$table,$array=array(),$order=array(),$limit=0,$fetchMode=PDO::FETCH_ASSOC){
+    public function select($fields,$table,$array=array(),$group=array(),$order=array(),$limit=0,$fetchMode=PDO::FETCH_ASSOC){
         $sql = "SELECT {$fields} FROM {$table}";
         
         if(is_array($array) && count($array)>0){
@@ -68,6 +68,11 @@ class Database extends PDO {
                 $sql.= "`{$key}`{$equal}:{$key} AND ";
             }
             $sql = rtrim($sql,' AND ');
+        }
+        
+        if(is_array($group) && count($group)>0){
+            $group = implode(', ',$group);
+            $sql.= " GROUP BY {$group}";
         }
         
         if(is_array($order) && count($order)==1){
