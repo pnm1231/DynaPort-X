@@ -16,7 +16,7 @@
 
 // The URL which can be accessed to framwork's main file index.php
 // DO NOT add a trailing slash.
-define('GLBL_URL','http://localhost/MVC2');
+define('GLBL_URL','');
 
 // Display only Errors while hiding notices and warnings
 //error_reporting(E_ALL ^ E_WARNING ^ E_NOTICE);
@@ -70,11 +70,17 @@ define('MAIL_USER','');
 // Password of the email account.
 define('MAIL_PASS','');
 
-// The email address that you want to display as 'From'.
+// The name you want to display as 'Sent by'.
 define('MAIL_FROM_NAME','');
 
-// The name you want to display as 'Sent by'.
+// The email address that you want to display as 'From'.
 define('MAIL_FROM_EMAIL','');
+
+// The name you want to display as 'Reply to'
+define('MAIL_REPLY_NAME','');
+
+// The email address you want to receive replies to
+define('MAIL_REPLY_EMAIL','');
 
 
 
@@ -84,7 +90,7 @@ define('MAIL_FROM_EMAIL','');
  ***************/
 
 // The encryption method you want to use. Ex: md5, sha256
-define('HASH_ALGO','md5');
+define('HASH_ALGO','sha256');
 
 // The salt you want to add.
 // Use differnent salts for different applications.
