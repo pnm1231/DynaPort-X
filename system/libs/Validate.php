@@ -27,14 +27,24 @@ class Validate {
             'float'     => FILTER_VALIDATE_FLOAT,
             'email'     => FILTER_VALIDATE_EMAIL,
             'url'       => FILTER_VALIDATE_URL,
-            'ip'        => FILTER_VALIDATE_IP
+            'ip'        => FILTER_VALIDATE_IP,
+            'string'    => 'string'
         );
         
         if(!empty($method) && array_key_exists($method,$methods)){
-            if(filter_var($string,$methods[$method])==false){
-                return false;
+            $string = trim($string);
+            if($method=='string'){
+                if(!empty($string)){
+                    return true;
+                }else{
+                    return false;
+                }
             }else{
-                return true;
+                if(filter_var($string,$methods[$method])==false){
+                    return false;
+                }else{
+                    return true;
+                }
             }
         }else{
             new Error_Controller('Validation error',500,'DPX.Libs.Validate.this: Invalid validation type');
