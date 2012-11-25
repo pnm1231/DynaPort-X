@@ -71,7 +71,8 @@ class Database extends PDO {
         }
         
         if(is_array($group) && count($group)>0){
-            $group = implode(', ',$group);
+            $group = implode(',',$group);
+            $group = preg_replace('/[^a-z0-9_\(\),]+/i','',$group);
             $sql.= " GROUP BY {$group}";
         }
         
@@ -80,8 +81,11 @@ class Database extends PDO {
             $orderArr[0] = $orderArrKeys[0];
             if($orderArr[0]=='0'){
                 $orderArr[0] = $order[0];
+                $orderArr[0] = preg_replace('/[^a-z0-9_\(\)]+/i','',$orderArr[0]);
             }else{
                 $orderArr[1] = $order[$orderArr[0]];
+                $orderArr[0] = preg_replace('/[^a-z0-9_\(\),]+/i','',$orderArr[0]);
+                $orderArr[1] = preg_replace('/[^a-z0-9_\(\)]+/i','',$orderArr[1]);
             }
             $order = (count($orderArr)>1)?implode(' ',$orderArr):$orderArr[0];
             $sql.= " ORDER BY {$order}";
