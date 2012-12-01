@@ -18,7 +18,7 @@ class Redirect {
      * @param string $uri The URL or the Path
      */
     public static function go($uri){
-        if(!preg_match('/^http\:/',$uri)){
+        if(!preg_match('/^(http|https)\:/',$uri)){
             $uri = ltrim($uri,'/');
             $uri = GLBL_URL.'/'.$uri;
         }
