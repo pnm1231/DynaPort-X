@@ -149,6 +149,7 @@ class Database extends PDO {
             $fieldDetails = rtrim($fieldDetails,',');
         }
         
+        $whereSQL = '';
         if(is_array($where) && count($where)>0){
             $whereSQL = 'WHERE ';
             if(is_array($where) && count($where)>0){
