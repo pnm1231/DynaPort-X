@@ -60,12 +60,17 @@ class Database extends PDO {
         if(is_array($array) && count($array)>0){
             $sql.= ' WHERE ';
             foreach($array as $key=>$value){
-                if(preg_match('/%/',$value)){
-                    $equal = ' LIKE ';
+                if(preg_match('/%%/',$value)){
+                    $value = preg_replace('/%%/','',$value);
+                    $sql.= "`{$key}`=`{$value}` AND ";
                 }else{
-                    $equal = '=';
+                    if(preg_match('/%/',$value)){
+                        $equal = ' LIKE ';
+                    }else{
+                        $equal = '=';
+                    }
+                    $sql.= "`{$key}`{$equal}:{$key} AND ";
                 }
-                $sql.= "`{$key}`{$equal}:{$key} AND ";
             }
             $sql = rtrim($sql,' AND ');
         }
@@ -100,7 +105,9 @@ class Database extends PDO {
         $sth = $this->prepare($sql);
         if(is_array($array) && count($array)>0){
             foreach($array as $key=>$value){
-                $sth->bindValue($key,$value);
+                if(!preg_match('/%%/',$value)){
+                    $sth->bindValue($key,$value);
+                }
             }
         }
 
@@ -197,9 +204,9 @@ class Database extends PDO {
             $whereSQL = 'WHERE ';
             if(is_array($where) && count($where)>0){
                 foreach($where AS $key=>$value){
-                    $whereSQL.= "`{$key}`=:{$key},";
+                    $whereSQL.= "`{$key}`=:{$key} AND";
                 }
-                $whereSQL = rtrim($whereSQL,',');
+                $whereSQL = rtrim($whereSQL,' AND');
             }else if(!is_array($where)){
                 $whereSQL.= $where;
             }
