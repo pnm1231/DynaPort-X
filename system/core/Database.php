@@ -161,9 +161,9 @@ class Database extends PDO {
             $whereSQL = 'WHERE ';
             if(is_array($where) && count($where)>0){
                 foreach($where AS $key=>$value){
-                    $whereSQL.= "`{$key}`=:where_{$key},";
+                    $whereSQL.= "`{$key}`=:where_{$key} AND ";
                 }
-                $whereSQL = rtrim($whereSQL,',');
+                $whereSQL = rtrim($whereSQL,' AND ');
             }else if(!is_array($where)){
                 $whereSQL.= $where;
             }
