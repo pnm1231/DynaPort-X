@@ -1,13 +1,21 @@
 <?php
 
-/*
- * This file is part of the DynaPort X package.
+/**
+ * DynaPort X
  *
- * (c) Prasad Nayanajith <prasad.n@dynamiccodes.com>
+ * A simple yet powerful PHP framework for rapid application development.
  *
+ * Licensed under BSD license
+ * 
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
+ * @package    DynaPort X
+ * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
+ * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
+ * @version    2.0.0
+ * @link       http://www.dynamiccodes.com/dynaportx
+ * @since      File available since Release 0.2.0
  */
 
 /**
@@ -30,23 +38,39 @@
  * http://www.gnu.org/licenses/
 */
 
+/**
+ * Registry Class
+ *
+ * The registry class which passes data throughtout the framework.
+ *
+ * @package     DynaPort X
+ * @subpackage  Core
+ * @category    Core
+ * @author      Prasad Nayanajith
+ * @link        http://www.dynamiccodes.com/dynaportx/doc/core/registry
+ */
 class Registry{
-    /** @var array $_record Stores records */
+    
+    /**
+     * Stored records
+     * 
+     * @var array
+     */
     private static $_record = array();
 
     /** 
-    * set - Places an item inside the registry record
-    * @param string $key The name of the item
-    * @param mixed &$item The item to reference
-    */
+     * set - Places an item inside the registry record
+     * @param string $key The name of the item
+     * @param mixed &$item The item to reference
+     */
     public static function set($key, &$item){
         self::$_record[$key] = &$item;
     }
 
     /**
-    * get - Gets an item out of the registry
-    * @param string $key The name of the item
-    */
+     * get - Gets an item out of the registry
+     * @param string $key The name of the item
+     */
     public static function get($key){
         if(isset(self::$_record[$key])){
             return self::$_record[$key];

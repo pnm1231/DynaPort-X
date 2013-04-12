@@ -32,4 +32,6 @@ Router::add(array(
 
  */
 
+Router::add('blog/post/(:num)','blog/post/index/$1');
+
 ?>

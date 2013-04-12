@@ -1,0 +1,61 @@
+/* 
+    Document   : style
+    Created on : 12/04/2013, 9:33:52 AM
+    Author     : Prasad
+    Description:
+        The default stylesheet for the sample app of the framework.
+*/
+
+body {
+    font:13px Arial;
+}
+.wrapper {
+    margin:0 auto;
+    display:table;
+    width:800px;
+    min-height:400px;
+    border:1px solid #ccc;
+}
+header {
+    display:block;
+    padding:15px 25px;
+    background:rgb(245,245,245);
+}
+header a {
+    text-decoration:none;
+}
+header h1#logo {
+    margin:0;
+    font-size:24px;
+    font-weight:normal;
+    color:#000;
+}
+section#body {
+    padding:25px 35px;
+}
+section#body h2 {
+    font-weight:normal;
+}
+section#body h2 small {
+    font-style:italic;
+}
+footer {
+    padding:15px 25px;
+    font-size:11px;
+    text-align:center;
+    background:rgb(245,245,245);
+}
+
+div.note {
+    padding:4px 8px;
+    margin-top:20px;
+    font-size:11px;
+    text-align:left;
+    color:gray;
+    background:#eee;
+    border:#ccc;
+}
+div.note:hover {
+    color:#fff;
+    background:red;
+}

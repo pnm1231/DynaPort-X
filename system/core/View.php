@@ -1,108 +1,75 @@
 <?php
 
-/*
- * This file is part of the DynaPort X package.
+/**
+ * DynaPort X
  *
- * (c) Prasad Nayanajith <prasad.n@dynamiccodes.com>
+ * A simple yet powerful PHP framework for rapid application development.
  *
+ * Licensed under BSD license
+ * 
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
- * 
+ *
+ * @package    DynaPort X
+ * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
+ * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
+ * @version    2.0.0
+ * @link       http://www.dynamiccodes.com/dynaportx
+ * @since      File available since Release 0.2.0
  */
 
+/**
+ * View Class
+ *
+ * The loader class which helps load classes into the application.
+ *
+ * @package     DynaPort X
+ * @subpackage  Core
+ * @category    Core
+ * @author      Prasad Nayanajith
+ * @link        http://www.dynamiccodes.com/dynaportx/doc/core/loader
+ */
 class View {
     
-    private $_header = true;
-    private $_footer = true;
+    /**
+     * Whether the \View is loaded once.
+     * 
+     * @var bool
+     */
+    private $_loadedOnce = false;
     
     /**
-     * Make the header or footer enable/disable
+     * Render a view
      * 
-     * @param string $arg Header or Footer
-     * @param boolean $bool True or false
-     * @return \View
+     * @param string $file File (view) to render.
      */
-    function set($arg,$bool){
-        if(($arg=='header' || $arg=='footer') && is_bool($bool)){
-            $arg = '_'.$arg;
-            $this->$arg = $bool;
-        }
-        return $this;
-    }
-    
-    /**
-     * Render the full page
-     * 
-     * @param string $name The file to render
-     */
-    function render($name){
-        if($this->_header==true){
-            $this->renderHeader();
+    public function render($file,$noerror=0){
+        
+        $file = Loader::pathnameToFile('view',$file);
+        
+        // Check whether Hooks are enabled.
+        if(GLBL_ENABLE_HOOKS==true && !$this->_loadedOnce){
+            
+            $this->_loadedOnce = true;
+            
+            // Run hooks registered to pre-view.
+            Hooks::run('dpx_pre_view');
         }
         
-        $this->renderThis($name);
+        // Check the availability of the view.
+        // If available, print it. Otherwise, throw a 500 error.
+        if(file_exists($file)){
         
-        if($this->_footer==true){
-            $this->renderFooter();
-        }
-    }
-    
-    /**
-     * Render the header
-     * 
-     * @return \View
-     */
-    function renderHeader(){
-        if(file_exists('application/views/header.php')){
-            require 'application/views/header.php';
-        }else if(file_exists('system/views/header.php')){
-            require 'system/views/header.php';
-        }
-        return $this;
-    }
-    
-    /**
-     * Render the footer
-     * 
-     * @return \View
-     */
-    function renderFooter(){
-        if(file_exists('application/views/footer.php')){
-            require 'application/views/footer.php';
-        }else if(file_exists('system/views/footer.php')){
-            require 'system/views/footer.php';
-        }
-        return $this;
-    }
-    
-    /**
-     * Render a specific file
-     * 
-     * @param string $name The file to render
-     * @return \View
-     */
-    function renderThis($name){
-        if(file_exists('application/views/'.$name.'.php')){
-            require 'application/views/'.$name.'.php';
-        }else if(file_exists('system/views/'.$name.'.php')){
-            require 'system/views/'.$name.'.php';
+            include $file;
+            
         }else{
-            new Error('The view does not exists.');
+            
+            if($noerror==0){
+                new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not availale.');
+            }
         }
-        return $this;
-    }
-    
-    /**
-     * Cache a page
-     * 
-     * @param string $name The file to cache and render
-     */
-    function cache($name){
-        $cache = new Cache($name);
-        ob_start();
-        $this->render($name);
-        $cache->cacheData = ob_get_clean();
-        $cache->serve(true);
     }
 
 }
+
+?>
