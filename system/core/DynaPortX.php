@@ -33,11 +33,8 @@ class DynaPortX {
 
     function __construct(){
 
-        // Initialize a PHP session.
-        Session::init();
-
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.0');
+        header('X-Framework: DynaPort X/1.0.0');
         
         // Check whether Hooks are enabled.
         if(GLBL_ENABLE_HOOKS==true){
