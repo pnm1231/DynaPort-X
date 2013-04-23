@@ -401,14 +401,19 @@ class Database extends PDO {
      * @return \Database
      */
     function run(){
-        if(isset($this->_qbQuery['select'])){
-            $query = 'SELECT '.$this->_qbQuery['select'];
-        }else if(isset($this->_qbQuery['insert'])){
-            $query = 'INSERT INTO '.$this->_qbQuery['insert'];
-        }else if(isset($this->_qbQuery['update'])){
-            $query = 'UPDATE '.$this->_qbQuery['update'];
-        }else if(isset($this->_qbQuery['delete'])){
-            $query = 'DELETE';
+        switch($this->_qbType){
+            case 'insert':
+                $query = 'INSERT INTO '.$this->_qbQuery['insert'];
+                break;
+            case 'update':
+                $query = 'UPDATE '.$this->_qbQuery['update'];
+                break;
+            case 'delete':
+                $query = 'DELETE';
+                break;
+            default:
+                $query = 'SELECT '.$this->_qbQuery['select'];
+                break;
         }
         
         if(isset($this->_qbQuery['set'])){
@@ -470,6 +475,7 @@ class Database extends PDO {
         }
         
         if($this->_qbType=='select'){
+            $this->reset();
             return $this;
         }else{
             if($this->_qbType=='insert'){
@@ -477,6 +483,7 @@ class Database extends PDO {
             }else if($this->_qbType=='update'){
                 $this->_affectedRows = $this->_qbSTH->rowCount();
             }
+            $this->reset();
             return $execute;
         }
     }
@@ -517,6 +524,15 @@ class Database extends PDO {
      */
     function affected(){
         return $this->_affectedRows;
+    }
+    
+    /**
+     * Reset query builder
+     */
+    private function reset(){
+        unset($this->_qbBinds);
+        unset($this->_qbQuery);
+        unset($this->_qbType);
     }
 
     /**
