@@ -375,11 +375,15 @@ class Database extends PDO {
     /**
      * DELETE statement
      * 
+     * @param string $table Table name
      * @return \Database
      */
-    function delete(){
+    function delete($table=null){
         $this->_qbQuery['delete'] = true;
         $this->_qbType = 'delete';
+        if($table){
+            $this->from($table);
+        }
         return $this;
     }
     
@@ -530,9 +534,9 @@ class Database extends PDO {
      * Reset query builder
      */
     private function reset(){
-        unset($this->_qbBinds);
-        unset($this->_qbQuery);
-        unset($this->_qbType);
+        $this->_qbBinds = null;
+        $this->_qbQuery = null;
+        $this->_qbType = null;
     }
 
     /**
