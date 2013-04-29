@@ -38,7 +38,7 @@ class cURL {
          * Check if cURL is installed
          */
         if(!function_exists('curl_init')){
-            new Error_Controller('Sorry cURL is not installed!');
+            new Error('Sorry cURL is not installed!');
         }
         
         /*
@@ -58,7 +58,7 @@ class cURL {
         if(!empty($url)){
             curl_setopt($this->ch,CURLOPT_URL,$url);
         }else{
-            new Error_Controller('Please provide a valid URL.');
+            new Error('Please provide a valid URL.');
         }
     }
     
@@ -127,7 +127,7 @@ class cURL {
         if(is_numeric($timeout)){
             curl_setopt($this->ch,CURLOPT_TIMEOUT,$timeout);
         }else{
-            new Error_Controller('Timeout should be an integer.');
+            new Error('Timeout should be an integer.');
         }
     }
     
