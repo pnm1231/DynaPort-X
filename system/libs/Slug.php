@@ -37,7 +37,7 @@ class Slug {
      * @param string $text String to fix
      * @return string Unicode-fixed string
      */
-    private function unicode_fix($text){
+    private static function unicode_fix($text){
         $badwordchars = array("\xe2\x80\x98", "\xe2\x80\x99", "\xe2\x80\x9c", "\xe2\x80\x9d", "\xe2\x80\x93", "\xe2\x80\x94", "\xe2\x80\xa6");
         $fixedwordchars = array("'", "'", '"', '"', '-', '--', '...');
         return str_replace($badwordchars,$fixedwordchars,$text);
