@@ -121,7 +121,7 @@ class DynaPortX {
                 if(method_exists($controller,'doBefore')){
                     
                     // Call the 'doBefore' method along with parameters if available.
-                    $controller->doBefore($uri->params);
+                    Object::callMethod($controller,'doBefore',$uri->params);
                     
                 }
 
@@ -156,7 +156,7 @@ class DynaPortX {
                 if(method_exists($controller,'doAfter')){
                     
                     // Call the 'doAfter' method along with parameters if available.
-                    $controller->doAfter($uri->params);
+                    Object::callMethod($controller,'doAfter',$uri->params);
                     
                 }
 
