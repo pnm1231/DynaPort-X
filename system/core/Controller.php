@@ -58,6 +58,13 @@ class Controller {
      * @var \View
      */
     public $view;
+    
+    /**
+     * Stored variabled
+     * 
+     * @var array Variables
+     */
+    private static $vars = array();
 
     function __construct(){
         
@@ -111,6 +118,29 @@ class Controller {
             
             new Error('DPX.Controller.Load: Invalid component type ('.$type.')',500);
         }
+    }
+    
+    /**
+     * Set a variable
+     * 
+     * These variables are accessible through any controller that is extending
+     * the parent (this) controller.
+     * 
+     * @param string $k Key
+     * @param mixed $v Value
+     */
+    function setVar($k,$v){
+        self::$vars[$k] = $v;
+    }
+    
+    /**
+     * Return a variable
+     * 
+     * @param string $k Key
+     * @return mixed Value
+     */
+    function getVar($k){
+        return self::$vars[$k];
     }
 
 }
