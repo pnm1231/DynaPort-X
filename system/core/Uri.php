@@ -68,7 +68,7 @@ class Uri {
     function __construct(){
         
         // Get the current URL.
-        $url = $this->currentURL();
+        $url = self::currentURL();
         
         // Parse the current URL.
         $urlParse = parse_url($url);
@@ -141,7 +141,7 @@ class Uri {
      * 
      * @return string Current URL
      */
-    function currentURL(){
+    public static function currentURL(){
         return 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'?'s':'').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     }
 
