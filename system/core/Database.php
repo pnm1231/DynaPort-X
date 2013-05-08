@@ -108,6 +108,9 @@ class Database extends PDO {
         }else{
             $select = $columns;
         }
+        if(preg_match('@\(@',$select)){
+            $select = preg_replace('@`([a-z]+)\(([a-z0-9_-]+)\)([^`]+)`@i','$1(`$2`)$3',$select);
+        }
         $this->_qbQuery['select'] = str_replace('.','`.`',$select);
         $this->_qbType = 'select';
         return $this;
@@ -456,14 +459,6 @@ class Database extends PDO {
         if(isset($this->_qbQuery['offset'])){
             $query.= ' OFFSET '.$this->_qbQuery['offset'];
         }
-        
-        /*
-        echo '<pre>';
-        echo $query;
-        echo "\n";
-        print_r($this->_qbBinds);
-        echo '</pre>';
-        */
         
         $this->_qbSTH = $this->prepare($query);
         if(is_array($this->_qbBinds) && count($this->_qbBinds)>0){
