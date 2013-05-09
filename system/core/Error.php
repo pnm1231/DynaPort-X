@@ -40,7 +40,7 @@ class Error {
      */
     public function __construct($message=null,$code=0,$realMessage=null){
         if($code==404){
-            $header = 'Not Found';
+            $header = '404 Not Found';
             $message = 'Page Not Found';
         }else if($code==500 OR $message==false){
             $header = '500 Internal Server Error';
