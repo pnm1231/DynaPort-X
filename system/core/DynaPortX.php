@@ -60,9 +60,7 @@ class DynaPortX {
             // Since the app is modularized, add 'modules' to the path.
             $path.= 'modules/';
             
-            /**
-             * If a module is not called, set module to the default module name.
-             */
+            // If a module is not called, set module to the default module name.
             if(empty($uri->module)){
                 $uri->module = GLBL_DEFAULT_MODULE;
             }
