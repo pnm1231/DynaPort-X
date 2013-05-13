@@ -60,8 +60,10 @@ class Registry{
 
     /** 
      * set - Places an item inside the registry record
+     * 
      * @param string $key The name of the item
      * @param mixed &$item The item to reference
+     * @return boolean
      */
     public static function set($key, &$item){
         self::$_record[$key] = &$item;
@@ -69,11 +71,28 @@ class Registry{
 
     /**
      * get - Gets an item out of the registry
+     * 
      * @param string $key The name of the item
+     * @return boolean
      */
     public static function get($key){
         if(isset(self::$_record[$key])){
             return self::$_record[$key];
+        }else{
+            return false;
+        }
+    }
+    
+    /**
+     * delete - Delete an item from the registry
+     * 
+     * @param string $key The name of the item
+     * @return boolean
+     */
+    public static function delete($key){
+        if(isset(self::$_record[$key])){
+            unset(self::$_record[$key]);
+            return true;
         }else{
             return false;
         }
