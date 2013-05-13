@@ -77,7 +77,14 @@ class Session {
      * @return boolean True/false
      */
     public static function delete($key){
-        unset($_SESSION[$key]);
+        // Check whether the session has started already. If not, start it.
+        if(session_id()==''){
+            self::init();
+        }
+        
+        if(isset($_SESSION[$key])){
+            unset($_SESSION[$key]);
+        }
         return true;
     }
 
