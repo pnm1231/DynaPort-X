@@ -140,7 +140,11 @@ class Controller {
      * @return mixed Value
      */
     function getVar($k){
-        return self::$vars[$k];
+        if(isset(self::$vars[$k])){
+            return self::$vars[$k];
+        }else{
+            return false;
+        }
     }
 
 }
