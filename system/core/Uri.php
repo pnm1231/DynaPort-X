@@ -77,7 +77,7 @@ class Uri {
         $glblParse = parse_url(GLBL_URL);
         
         // Get the URI.
-        $uri = ltrim(str_replace(strtolower($glblParse['path']),'',strtolower($urlParse['path'])),'/');
+        $uri = ltrim(str_replace(strtolower($glblParse['path']),'',$urlParse['path']),'/');
 
         // Check whether Hooks are enabled.
         if(GLBL_ENABLE_HOOKS==true){
