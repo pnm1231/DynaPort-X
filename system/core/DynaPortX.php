@@ -36,6 +36,11 @@ class DynaPortX {
         // Give credit ;)
         header('X-Framework: DynaPort X/1.0.0');
         
+        // Auto-start session if it is required.
+        if(GLBL_AUTOSTART_SESSION==true){
+            Session::init();
+        }
+        
         // Check whether Hooks are enabled.
         if(GLBL_ENABLE_HOOKS==true){
             

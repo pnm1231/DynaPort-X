@@ -48,6 +48,11 @@ define('GLBL_ENABLE_HOOKS',true);
 define('GLBL_FOLDERS_APPLICATION','application');
 
 /**
+ * Specify whether the framework should start a session automatically
+ */
+define('GLBL_AUTOSTART_SESSION',false);
+
+/**
  * Error reporting.
  */
 error_reporting(E_ALL); // Development level
