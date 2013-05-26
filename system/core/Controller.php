@@ -68,9 +68,6 @@ class Controller {
 
     function __construct(){
         
-        // Convert model variable to an object.
-        $this->model = new stdClass();
-        
         // Load models that are requested to be pre-loaded.
         if($this->models && is_array($this->models) && count($this->models)>0){
             foreach($this->models AS $model){
@@ -109,6 +106,11 @@ class Controller {
             // If the component is already loaded, do not continue.
             if(isset($this->{$type}->{$componentName})){
                 return false;
+            }
+            
+            // Convert the component's variable into an object.
+            if(!is_object($this->{$type})){
+                $this->{$type} = new stdClass();
             }
             
             // Load the model and assign it to the relavant variable.
