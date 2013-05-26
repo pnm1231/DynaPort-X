@@ -30,12 +30,36 @@
  * @link        http://www.dynamiccodes.com/dynaportx/doc/core/model
  */
 class Model {
+    
+    /**
+     * Database class
+     * 
+     * @var \Database
+     */
+    protected $db;
+    
+    /**
+     * Preserved database class
+     * 
+     * @var \Database
+     */
+    static $dbInstance;
 
     function __construct(){
+        
         // Check if the database name and the user is defined.
         // If defined, call the database.
         if(DB_NAME && DB_USER){
-            $this->db = new Database(DB_TYPE,DB_HOST,DB_NAME,DB_USER,DB_PASS);
+            
+            // Check if there are no preserved DB instances.
+            // If there aren't any, create a new DB object.
+            // If there is one, use it as the DB object without re-connecting.
+            if(empty(self::$dbInstance)){
+                $this->db = new Database(DB_TYPE,DB_HOST,DB_NAME,DB_USER,DB_PASS);
+                self::$dbInstance = $this->db;
+            }else{
+                $this->db = self::$dbInstance;
+            }
         }
     }
 
