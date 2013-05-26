@@ -56,8 +56,11 @@ class Cookie {
      * @return string Data
      */
     public static function get($key){
-        if(isset($_COOKIE[$key]))
-        return $_COOKIE[$key];
+        if(isset($_COOKIE[$key])){
+            return $_COOKIE[$key];
+        }else{
+            return false;
+        }
     }
     
     /**
@@ -72,7 +75,7 @@ class Cookie {
         if($domain==null){
             $domain = $_SERVER['SERVER_NAME'];
         }
-        setcookie($key,'',time()-3600,'/',$domain);
+        setcookie($key,'',time()-3600,$path,$domain);
         return true;
     }
 
