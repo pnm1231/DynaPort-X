@@ -76,6 +76,11 @@ class Uri {
         // Parse the base URL.
         $glblParse = parse_url(GLBL_URL);
         
+        // If the GLBL_URL does not have a path, indicate it as the base.
+        if(!isset($glblParse['path'])){
+            $glblParse['path'] = '';
+        }
+        
         // Get the URI.
         $uri = ltrim(str_replace($glblParse['path'],'',$urlParse['path']),'/');
 
