@@ -43,7 +43,11 @@ class Cookie {
      */
     public static function set($key,$value,$expire=null,$path='/',$domain=null){
         if($domain==null){
-            $domain = $_SERVER['SERVER_NAME'];
+            // If the app is running on localhost, keep the domain as null.
+            // Otherwise, make it the server name (domain).
+            if($_SERVER['SERVER_NAME']!='localhost'){
+                $domain = $_SERVER['SERVER_NAME'];
+            }
         }
         setcookie($key,$value,$expire,$path,$domain);
         return true;
