@@ -37,6 +37,11 @@ class Validate {
      * @return boolean Validation result
      */
     public static function this($string,$method){
+        // If the string is empty, return false right away.
+        if(empty($string)){
+            return false;
+        }
+        
         $methods = array(
             'int'       => FILTER_VALIDATE_INT,
             'boolean'   => FILTER_VALIDATE_BOOLEAN,
@@ -50,7 +55,7 @@ class Validate {
         if(!empty($method) && array_key_exists($method,$methods)){
             $string = trim($string);
             if($method=='string'){
-                if(!empty($string)){
+                if(is_string($string)){
                     return true;
                 }else{
                     return false;
