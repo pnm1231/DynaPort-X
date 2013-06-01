@@ -97,7 +97,7 @@ class Loader {
             
             // If modularized, look inside the modules folder.
             $file.= 'modules/';
-            $file.= str_replace('/','/'.$type.'s/',$name);
+            $file.= preg_replace('@/@','/'.$type.'s/',$name,1);
             
         }else{
             
