@@ -84,7 +84,7 @@ class Loader {
      * @param string $name Component name
      * @return string Full file name with path
      */
-    static function pathnameToFile($type='view',$name){
+    static function pathnameToFile($type,$name){
         
         // Sanitize the class path/name.
         $name = preg_replace('@([^A-z0-9\/])@','',$name);
@@ -97,13 +97,11 @@ class Loader {
             
             // If modularized, look inside the modules folder.
             $file.= 'modules/';
-            $file.= preg_replace('@/@','/'.$type.'s/',$name,1);
             
-        }else{
-            
-            // If not modularized, just look in the usual folder.
-            $file.= $type.'s/'.$name;
         }
+        
+        // Append the component type to the first separator
+        $file.= preg_replace('@/@','/'.$type.'s/',$name,1);
         
         // Add the file type at the end.
         $file.= '.php';
