@@ -79,7 +79,7 @@ define('DB_TYPE','mysql');
 /**
  * Where your database server is located. Usually it is 'localhost'.
  */
-define('DB_HOST','localhost');
+define('DB_HOST','127.0.0.1');
 
 /**
  * The name of the database you are going to access.
