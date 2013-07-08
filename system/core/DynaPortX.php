@@ -65,9 +65,14 @@ class DynaPortX {
             // Since the app is modularized, add 'modules' to the path.
             $path.= 'modules/';
             
-            // If a module is not called, set module to the default module name.
+            // Check whether a module is called.
             if(empty($uri->module)){
+                
+                // If a module is not called, set module to the default module name.
                 $uri->module = GLBL_DEFAULT_MODULE;
+                
+                // Add the default module name to the registry.
+                Registry::set('dpx_module',$uri->module);
             }
                 
             // Add the called module name to the path.
@@ -87,6 +92,9 @@ class DynaPortX {
             
             // Set the controller name to the default controller name.
             $uri->controller = GLBL_DEFAULT_CONTROLLER;
+            
+            // Add the default controller name to the registry.
+            Registry::set('dpx_controller',$uri->controller);
             
         }
         
@@ -133,6 +141,9 @@ class DynaPortX {
 
                     // Set the controller name to the default controller name.
                     $uri->method = GLBL_DEFAULT_METHOD;
+                    
+                    // Add the default method name to the registry.
+                    Registry::set('dpx_method',$uri->method);
 
                 }
                 
