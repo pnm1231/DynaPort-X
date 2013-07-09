@@ -132,8 +132,9 @@ class cURL {
     }
     
     /**
-     * Should the SSL certificates be Verify?
-     * @param boolean $sslverify Verify or not
+     * Should the SSL certificates be Verified?
+     * 
+     * @param boolean $sslverify true/false
      */
     function setSslVerify($sslverify=1){
         curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER,$sslverify);
