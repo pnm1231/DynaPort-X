@@ -97,7 +97,7 @@ class cURL {
      * @param string $userAgent User agent name
      */
     function setUserAgent($userAgent){
-        curl_setopt($this->ch,CURLOPT_USERAGENT,$$userAgent);
+        curl_setopt($this->ch,CURLOPT_USERAGENT,$userAgent);
     }
     
     /**
