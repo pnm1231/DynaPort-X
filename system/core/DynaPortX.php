@@ -34,7 +34,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/1.0.0');
+        header('X-Framework: DynaPort X/2.0.30');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){
