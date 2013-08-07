@@ -65,7 +65,7 @@ class View {
         }else{
             
             if($noerror==0){
-                new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not availale.');
+                new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not available.');
             }
         }
     }
