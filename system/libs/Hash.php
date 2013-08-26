@@ -35,10 +35,11 @@ class Hash {
      * Generate a HASH string
      * 
      * @param string $data The string to make a hash
+     * @param string $salt (optional) The salt it should use
      * @return string The hash
      */
-    public static function create($data){
-        $context = hash_init(HASH_ALGO,HASH_HMAC,HASH_SALT);
+    public static function create($data,$salt=HASH_SALT){
+        $context = hash_init(HASH_ALGO,HASH_HMAC,$salt);
         hash_update($context,$data);
         return hash_final($context);
     }
