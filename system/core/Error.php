@@ -39,7 +39,10 @@ class Error {
      * @param string $realMessage Real error message
      */
     public function __construct($message=null,$code=0,$realMessage=null){
-        if($code==404){
+        if($code==400){
+            $header = '400 Bad Request';
+            $message = 'Bad Request';
+        }else if($code==404){
             $header = '404 Not Found';
             $message = 'Page Not Found';
         }else if($code==500 OR $message==false){

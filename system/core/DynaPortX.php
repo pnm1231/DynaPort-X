@@ -34,7 +34,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.30');
+        header('X-Framework: DynaPort X/2.0.33');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){
@@ -55,6 +55,11 @@ class DynaPortX {
         
         // Call the URI library to break down the URL into sections.
         $uri = new Uri();
+        
+        // Check if the URI returned any errors. If so, throw it out.
+        if(!empty($uri->error)){
+            new Error('',$uri->error);
+        }
         
         // Start generating the path.
         $path = GLBL_FOLDERS_APPLICATION.'/';

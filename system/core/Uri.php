@@ -64,25 +64,51 @@ class Uri {
      * @var array
      */
     public $params;
+    
+    /**
+     * Errors occurred
+     * 
+     * @var string
+     */
+    public $error;
 
     function __construct(){
         
-        // Get the current URL.
-        $url = self::currentURL();
-        
-        // Parse the current URL.
-        $urlParse = parse_url($url);
-        
-        // Parse the base URL.
-        $glblParse = parse_url(GLBL_URL);
-        
-        // If the GLBL_URL does not have a path, indicate it as the base.
-        if(!isset($glblParse['path'])){
-            $glblParse['path'] = '';
+        // Check whether the URI is specified.
+        // If so, use it as the URI.
+        // Otherwise figure out the URI using the current URL.
+        if(isset($_GET['uri']) && !empty($_GET['uri'])){
+            
+            // Build the full URL using the URI
+            $url = GLBL_URL.'/'.$_GET['uri'];
+            
+            // If it is not a valid URL, throw a 400 error.
+            if(!Validate::this($url,'url')){
+                $this->error = 400;
+                return;
+            }
+            
+            // Get the specified URI.
+            $uri = $_GET['uri'];
+        }else{
+            
+            // Get the current URL.
+            $url = self::currentURL();
+
+            // Parse the current URL.
+            $urlParse = parse_url($url);
+
+            // Parse the base URL.
+            $glblParse = parse_url(GLBL_URL);
+
+            // If the GLBL_URL does not have a path, indicate it as the base.
+            if(!isset($glblParse['path'])){
+                $glblParse['path'] = '';
+            }
+
+            // Get the URI.
+            $uri = ltrim(str_replace($glblParse['path'],'',$urlParse['path']),'/');
         }
-        
-        // Get the URI.
-        $uri = ltrim(str_replace($glblParse['path'],'',$urlParse['path']),'/');
 
         // Check whether Hooks are enabled.
         if(GLBL_ENABLE_HOOKS==true){
