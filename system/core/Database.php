@@ -145,7 +145,7 @@ class Database extends PDO {
         $column = str_replace('.','`.`',$column);
         $count = isset($this->_qbQuery['where'])?count($this->_qbQuery['where']):0;
         
-        /* IN operator */
+        // IN operator
         if(strtolower($operator)=='in'){
             $operator = ' IN ';
             $value_key = '(';
@@ -161,7 +161,7 @@ class Database extends PDO {
             }
             $value_key.= ')';
             
-        /* BETWEEN operator */
+        // BETWEEN operator
         }else if(strtolower($operator)=='between'){
             $operator = ' BETWEEN ';
             $value_key = ':b'.$count.'_0_'.$column_safe;
@@ -170,8 +170,9 @@ class Database extends PDO {
             $this->_qbBinds['b'.$count.'_0_'.$column_safe] = $value[0];
             $this->_qbBinds['b'.$count.'_1_'.$column_safe] = $value[1];
             
+        // EQUAL operator
         }else{
-            /* LIKE and NOT LIKE operator */
+            // LIKE and NOT LIKE operator
             if(strtolower($operator)=='like' || strtolower($operator)=='not like'){
                 $operator = ' '.strtoupper($operator).' ';
             }
@@ -279,7 +280,7 @@ class Database extends PDO {
         if(is_array($column) && count($column)>0){
             $group = implode('`,`',$column);
         }else{
-            $group = $column;
+            $group = str_replace(',','`,`',$column);
         }
         $group = str_replace('.','`.`',$group);
         $this->_qbQuery['group'] = '`'.$group.'`';
@@ -300,7 +301,7 @@ class Database extends PDO {
             if(is_array($column) && count($column)>0){
                 $order = implode('`,`',$column);
             }else{
-                $order = $column;
+                $order = str_replace(',','`,`',$column);
             }
             $order = str_replace('.','`.`',$order);
             $this->_qbQuery['order'][] = '`'.$order.'` '.strtoupper($type);
