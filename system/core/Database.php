@@ -295,16 +295,32 @@ class Database extends PDO {
      * @return \Database
      */
     function order($column,$type='ASC'){
-        if(strtolower($column)=='rand'){
+        // Check whether the order is for random
+        if(!is_array($column) && strtolower($column)=='rand'){
             $this->_qbQuery['order'][] = 'RAND()';
+            
+        // If not random...
         }else{
+            // Check whether an array was provided (multiple fields)
             if(is_array($column) && count($column)>0){
-                $order = implode('`,`',$column);
+                $orderArr = '';
+                $type = '';
+                foreach($column AS $col=>$ord){
+                    $orderArr[] = '`'.$col.'` '.strtoupper($ord);
+                }
+                $order = implode(',',$orderArr);
+                
+            // If not, use the simple 'column TYPE' approach
             }else{
                 $order = str_replace(',','`,`',$column);
+                $order = '`'.$order.'` '.strtoupper($type);
             }
+            
+            // Break table names and fields properly
             $order = str_replace('.','`.`',$order);
-            $this->_qbQuery['order'][] = '`'.$order.'` '.strtoupper($type);
+            
+            // Add it to the query builder
+            $this->_qbQuery['order'][] = $order;
         }
         return $this;
     }
