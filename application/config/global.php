@@ -8,7 +8,7 @@
  * The URL which can be accessed to framwork's main file index.php
  * DO NOT add a trailing slash.
  */
-define('GLBL_URL','http://localhost/DynaPort-X');
+define('GLBL_URL',guess_base_url());
 
 /**
  * When this is true, the system will break the URI into 4 sections.
