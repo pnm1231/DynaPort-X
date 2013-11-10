@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.0
+ * @version    2.0.37
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -34,7 +34,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.35');
+        header('X-Framework: DynaPort X/2.0.37');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){

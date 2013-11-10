@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.0
+ * @version    2.0.37
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -108,8 +108,9 @@ class Database extends PDO {
         }else{
             $select = $columns;
         }
-        if(preg_match('@\(@',$select)){
-            $select = preg_replace('@`([a-z]+)\(([a-z0-9_-]+)\)([^`]+)`@i','$1(`$2`)$3',$select);
+        if(preg_match('@(\(|as)@i',$select)){
+            $select = preg_replace('@\ AS ([a-z0-9_-]+)`@i','` AS `$1`',$select);
+            $select = preg_replace('@`([a-z]+)\(([a-z0-9_-]+)\)([^`]?)`@i','$1(`$2`)$3',$select);
         }
         $this->_qbQuery['select'] = str_replace('.','`.`',$select);
         $this->_qbType = 'select';
@@ -267,6 +268,13 @@ class Database extends PDO {
         $column1 = str_replace('.','`.`',$column1);
         $column2 = str_replace('.','`.`',$column2);
         $this->_qbQuery['from'][] = 'LEFT JOIN `'.$table.'` ON `'.$column1.'`=`'.$column2.'`';
+        return $this;
+    }
+    
+    function inner_join($table,$column1,$column2){
+        $column1 = str_replace('.','`.`',$column1);
+        $column2 = str_replace('.','`.`',$column2);
+        $this->_qbQuery['from'][] = 'INNER JOIN `'.$table.'` ON `'.$column1.'`=`'.$column2.'`';
         return $this;
     }
     
@@ -752,6 +760,19 @@ class Database extends PDO {
         $sth->execute();
         $this->_affectedRows = $sth->rowCount();
         return $this->_affectedRows;
+    }
+    
+    public function raw($sql,$array=array()){
+        $sth = $this->prepare($sql);
+        if(is_array($array) && count($array)>0){
+            foreach ($array as $key => $value) {
+                $sth->bindValue($key, $value);
+            }
+        }
+
+        $execute = $sth->execute();
+        $this->_affectedRows = $sth->rowCount();
+        return $execute;
     }
     
     /**
