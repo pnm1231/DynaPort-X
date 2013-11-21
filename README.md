@@ -1,8 +1,8 @@
-DynaPort X, the PHP MVC Framework
+DynaPort X, the PHP HMVC Framework
 ==================================
 
-DynaPort X is a simple yet powerful PHP framework which follows MVC architecture
-to help make PHP application in larger format. It's an update for
+DynaPort X is a simple yet powerful PHP framework which follows the HMVC
+architecture to help make PHP application in larger format. It's an update for
 [DynaPortLite X](https://bitbucket.org/pnm123/dynaport-lite-x) which is a
 non-MVC framework by default.
 
