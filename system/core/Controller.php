@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.0
+ * @version    2.0.38
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -39,6 +39,13 @@ class Controller {
     public $models = array();
     
     /**
+     * Auto-load libraries
+     * 
+     * @var array Array of libraries
+     */
+    public $libraries = array();
+    
+    /**
      * Loaded models
      * 
      * @var \class Model object(s)
@@ -53,7 +60,21 @@ class Controller {
     public $controller;
     
     /**
-     * View class
+     * Loaded libraries
+     * 
+     * @var \class Library object(s)
+     */
+    public $library;
+    
+    /**
+     * Component loader
+     * 
+     * @var \Loader
+     */
+    public $load;
+    
+    /**
+     * View object
      * 
      * @var \View
      */
@@ -68,58 +89,39 @@ class Controller {
 
     function __construct(){
         
-        // Load models that are requested to be pre-loaded.
+        // Assign the Loader object.
+        $this->load = new Loader($this);
+        
+        // Load models that are requested to be auto-loaded.
         if($this->models && is_array($this->models) && count($this->models)>0){
             foreach($this->models AS $model){
-                $this->load('model',$model);
+                $this->load->model($model);
             }
         }
         
-        // Assign the View class.
+        // Load libraries that are requested to be auto-loaded.
+        if($this->libraries && is_array($this->libraries) && count($this->libraries)>0){
+            foreach($this->libraries AS $library){
+                $this->load->library($library);
+            }
+        }
+        
+        // Assign the View object.
         $this->view = new View();
     }
     
     /**
      * Load a component
+     * @deprecated deprecated since version 2.0.38
      * 
      * @param string $type Component type (model,controller)
      * @param string $component Component path/name
+     * 
      */
     function load($type,$component){
         
-        // Validate the component type.
-        if($type=='model' || $type=='controller'){
-            
-            // Check whether the app is modularized.
-            if(GLBL_MODULARIZED==true){
-            
-                // Break down the component path/name
-                list($componentLoc,$componentName) = explode('/',$component);
-            
-            }else{
-                
-                // Get the component as as the name.
-                $componentName = $component;
-                
-            }
-            
-            // If the component is already loaded, do not continue.
-            if(isset($this->{$type}->{$componentName})){
-                return false;
-            }
-            
-            // Convert the component's variable into an object.
-            if(!is_object($this->{$type})){
-                $this->{$type} = new stdClass();
-            }
-            
-            // Load the model and assign it to the relavant variable.
-            $this->{$type}->{$componentName} = Loader::load($type,$component);// $this->load->{$type}($component);
-            
-        }else{
-            
-            new Error('DPX.Controller.Load: Invalid component type ('.$type.')',500);
-        }
+        $this->load->{$type}($component);
+        
     }
     
     /**

@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.0
+ * @version    2.0.38
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -32,79 +32,226 @@
 class Loader {
     
     /**
-     * Load a class
+     * Main controller instance
      * 
-     * @param string $type Class type (controller/model)
-     * @param string $name Class path and name
-     * @param bool $noerror Don't throw 'not found' error
-     * @return \class
+     * @var \Controller
      */
-    static function load($type,$name,$noerror=0){
+    private $controller;
+    
+    /**
+     * Current component
+     * 
+     * @var string 
+     */
+    private $component;
+    
+    /**
+     * Arguments
+     * 
+     * @var array
+     */
+    private $arguments;
+    
+    function __construct(&$controller){
         
-        $file = self::pathnameToFile($type,$name);
+        // Store the DynaPort X controller instance.
+        $this->controller = $controller;
+    }
+    
+    /**
+     * Load a controller
+     * 
+     * @param string $name Controller name
+     * @return bool
+     */
+    public function controller($name){
         
-        // Check whether the file exists.
+        // Mark the current loading component as a controller.
+        $this->component = 'controller';
+        
+        // Remove previously stored arguments.
+        $this->arguments = null;
+        
+        return $this->loadComponent($name);
+    }
+    
+    /**
+     * Load a model
+     * 
+     * @param string $name Model name
+     * @return bool
+     */
+    public function model($name){
+        
+        // Mark the current loading component as a model.
+        $this->component = 'model';
+        
+        // Remove previously stored arguments.
+        $this->arguments = null;
+        
+        return $this->loadComponent($name);
+    }
+    
+    /**
+     * Load a library
+     * 
+     * @param string $name Library name
+     * @return bool
+     */
+    public function library($name){
+        
+        // Mark the current loading component as a library.
+        $this->component = 'library';
+        
+        // Remove previously stored arguments.
+        $this->arguments = null;
+        
+        // Store arguments if provided.
+        $arguments = func_get_args();
+        if($arguments>1){
+            unset($arguments[0]);
+            $this->arguments = $arguments;
+        }
+        
+        return $this->loadComponent($name);
+    }
+    
+    /**
+     * Load a component
+     * 
+     * @param string $name Component name
+     * @return bool
+     */
+    private function loadComponent($name){
+        
+        $file = $this->pathnameToFile($this->component,$name);
+        
+        // Check if the component file is available.
         if(file_exists($file)){
             
-            // Check if the app is modularized, again.
-            if(GLBL_MODULARIZED==true){
-
-                // If modularized, use 'ModuleController' naming.
-                list($module,$nameFName) = explode('/',$name);
-                $class = ucwords($module).ucwords($nameFName);
-
-            }else{
-
-                // If not modularized, use 'Controller' naming.
-                $class = ucwords($name);
-            }
-
-            // Add the type (Controller/Model) at the end.
-            $class.= ucwords($type);
-
-            // Include the clas file.
+            // Require the file once.
             require_once $file;
-
-            // Create the object and return it.
-            return new $class;
+            
+            // Explode the component name by the seperators.
+            $nameExpl = explode('/',$name);
+            
+            // Initialize the component name.
+            $componentName = end($nameExpl);
+            
+            $className = '';
+            
+            // Check if the component is a controller or a model.
+            if($this->component=='controller' || $this->component=='model'){
+                
+                // If the app is modularized, add module name to the class name.
+                if(GLBL_MODULARIZED==true){
+                    $className = ucfirst($nameExpl[0]);
+                }
+                
+            }
+            
+            // Append the component name to the class name.
+            $className.= ucfirst($componentName);
+            
+            // Check if the component is a controller or a model.
+            if($this->component=='controller' || $this->component=='model'){
+                
+                // Append the controller name to the class name.
+                $className.= ucfirst($this->component);
+                
+            }
+            
+            // Check if any arguments are passed.
+            if(count($this->arguments)==0){
+                
+                // Create the object without any arguments.
+                try {
+                    $object = new $className();
+                }catch(Exception $e){
+                    new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.$e->getMessage());
+                }
+                
+            }else{
+                
+                // Create the object by passing the arguments.
+                try {
+                    $reflect  = new ReflectionClass($className);
+                    $object = $reflect->newInstanceArgs($this->arguments);
+                }catch(Exception $e){
+                    new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.$e->getMessage());
+                }
+            }
+            
+            // Convert the component's variable into an object.
+            if(!is_object($this->controller->{$this->component})){
+                $this->controller->{$this->component} = new stdClass();
+            }
+            
+            $this->controller->{$this->component}->{$componentName} = $object;
+        
+            return true;
             
         }else{
-            
-            // If 'Do not show error' is 0/false, throw error 500.
-            if($noerror==0){
-                new Error('Something unavailable was called.',500,'DPX.Loader.'.ucwords($type).': '.ucwords($type).' \''.$name.'\' is not availale.');
-            }
+            new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.ucfirst($this->component).' \''.$name.'\' is not available.');
         }
     }
     
     /**
      * Convert a path-name to the file
      * 
-     * @param string $type Component type (controller/model/view)
+     * @param string $component Component type
      * @param string $name Component name
-     * @return string Full file name with path
+     * @return string File and path
      */
-    static function pathnameToFile($type,$name){
+    static function pathnameToFile($component,$name){
         
         // Sanitize the class path/name.
-        $name = preg_replace('@([^A-z0-9\/])@','',$name);
+        $name = preg_replace('@([^A-z0-9\/-])@','',$name);
         
         // Start building the file path.
         $file = GLBL_FOLDERS_APPLICATION.'/';
         
-        // Check if the app is modularized.
-        if(GLBL_MODULARIZED==true){
+        // Check if a library is requested.
+        if($component=='library'){
             
-            // If modularized, look inside the modules folder.
-            $file.= 'modules/';
+            // Append library folder name to the file path.
+            $file.= GLBL_FOLDERS_LIBRARY.'/';
+            
+        // Check if the request is for a controller, model or a view.
+        }else if(in_array($component,array('controller','model','view'))){
+            
+            // Check if the app is modularized.
+            if(GLBL_MODULARIZED==true){
+
+                // If modularized, look inside the modules folder.
+                $file.= 'modules/';
+            
+                // Check if the module is not defined.
+                if(!preg_match('@/@',$name)){
+                    
+                    // Prepend the current module to the component name.
+                    $name = Registry::get('dpx_module').'/'.$name;
+                }
+
+                // Inject the component type to the first separator.
+                $name = preg_replace('@/@','/'.$component.'s/',$name,1);
+
+            }else{
+            
+                // Prepend the component type to the name.
+                $name = $component.'s/'.$name;
+            
+            }
+            
+        }else{
+            
+            // Invalid component type is requested.
+            new Error('Invalid component type is being loaded.',500,'DPX.Loader.load: Requested component type \''.$component.'\' is not valid.');
             
         }
         
-        // Append the component type to the first separator
-        $file.= preg_replace('@/@','/'.$type.'s/',$name,1);
-        
-        // Add the file type at the end.
-        $file.= '.php';
+        // Append the component name and the extension to the file path.
+        $file.= $name.'.php';
         
         return $file;
     }

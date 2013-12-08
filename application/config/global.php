@@ -48,6 +48,13 @@ define('GLBL_ENABLE_HOOKS',true);
 define('GLBL_FOLDERS_APPLICATION','application');
 
 /**
+ * The name of the library folder.
+ * (Relative to the GLBL_FOLDERS_APPLICATION folder)
+ * Default: libs
+ */
+define('GLBL_FOLDERS_LIBRARY','libs');
+
+/**
  * Specify whether the framework should start a session automatically
  */
 define('GLBL_AUTOSTART_SESSION',false);

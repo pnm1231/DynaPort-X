@@ -35,7 +35,10 @@ class CommonIndexController extends Controller {
         $this->view->session = $session;
         
         // Render the view
-        $this->view->render('common/index');
+        // Unlike when rendering the header, module name is NOT specified here.
+        // Since v2.0.38, the framework supports rendering same-module views
+        // without repeating the module name. Therefore this is acceptable.
+        $this->view->render('index');
     }
     
     /**
