@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.37
+ * @version    2.0.39
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -44,6 +44,20 @@ class Database extends PDO {
      * @var integer
      */
     private $_affectedRows;
+    
+    /**
+     * Whether a transaction has initiated
+     * 
+     * @var bool
+     */
+    private $_txStarted = false;
+    
+    /**
+     * Failed transactions count
+     * 
+     * @var integer
+     */
+    private $_txFailedCount = 0;
     
     /**
      * PDO Fetch Mode
@@ -495,7 +509,15 @@ class Database extends PDO {
         try {
             $execute = $this->_qbSTH->execute();
         }catch(Exception $e){
-            new Error('Error with the database connection',500,$e);
+            new Error('Error with the database!',500,'DPX.Database.run: '.$e);
+        }
+        
+        if($execute==false){
+            if($this->_txStarted==true){
+                $this->_txFailedCount++;
+            }else{
+                throw new Exception('The query returned false!');
+            }
         }
         
         if($this->_qbType=='select'){
@@ -504,7 +526,7 @@ class Database extends PDO {
         }else{
             if($this->_qbType=='insert'){
                 $this->_lastInsertId = $this->lastInsertId();
-            }else if($this->_qbType=='update'){
+            }else if($this->_qbType=='update' || $this->_qbType=='delete'){
                 $this->_affectedRows = $this->_qbSTH->rowCount();
             }
             $this->reset();
@@ -557,6 +579,40 @@ class Database extends PDO {
         $this->_qbBinds = null;
         $this->_qbQuery = null;
         $this->_qbType = null;
+    }
+    
+    /**
+     * Initiate a transaction
+     * 
+     * @return boolean
+     */
+    function txStart(){
+        if($this->_txStarted){
+            return false;
+        }else{
+            $this->_txStarted = $this->beginTransaction();
+            return $this->_txStarted;
+        }
+    }
+    
+    /**
+     * End a transaction
+     * 
+     * @return boolean
+     */
+    function txEnd(){
+        $result = false;
+        if($this->_txStarted){
+            if($this->_txFailedCount==0){
+                $this->commit();
+                $result = true;
+            }else{
+                $this->rollBack();
+                $this->_txFailedCount = 0;
+            }
+            $this->_txStarted = false;
+        }
+        return $result;
     }
 
     /**
@@ -773,24 +829,6 @@ class Database extends PDO {
         $execute = $sth->execute();
         $this->_affectedRows = $sth->rowCount();
         return $execute;
-    }
-    
-    /**
-     * last inserted row ID (backward compatibility)
-     * 
-     * @return integer ID
-     */
-    function getLastId(){
-        return $this->id();
-    }
-    
-    /**
-     * Affected rows (backward compatibility)
-     * 
-     * @return integer No. of rows
-     */
-    function getAffectedRows(){
-        return $this->affected();
     }
 
 }
