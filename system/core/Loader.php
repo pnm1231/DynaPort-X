@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.38
+ * @version    2.0.41
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -214,8 +214,21 @@ class Loader {
         // Check if a library is requested.
         if($component=='library'){
             
-            // Append library folder name to the file path.
-            $file.= GLBL_FOLDERS_LIBRARY.'/';
+            // Check if it's for a system library
+            if(preg_match('@^system/@',$name)){
+                
+                // Put the system library folder as the file path.
+                $file = 'system/libs/';
+                
+                // Remove the part 'system/' from the component name.
+                $name = preg_replace('@^system/@','',$name);
+                
+            }else{
+            
+                // Append the application library folder to the file path.
+                $file.= GLBL_FOLDERS_LIBRARY.'/';
+                
+            }
             
         // Check if the request is for a controller, model or a view.
         }else if(in_array($component,array('controller','model','view'))){
