@@ -13,7 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.0
+ * @version    2.0.40
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
@@ -69,6 +69,16 @@ class cURL {
      */
     function setHttpPost($body){
         curl_setopt($this->ch,CURLOPT_POST,true);
+        curl_setopt($this->ch,CURLOPT_POSTFIELDS,$body);
+    }
+    
+    /**
+     * Set the HTTP method to PUT
+     * 
+     * @param string $body PUT fields
+     */
+    function setHttpPut($body){
+        curl_setopt($this->ch,CURLOPT_CUSTOMREQUEST,'PUT');
         curl_setopt($this->ch,CURLOPT_POSTFIELDS,$body);
     }
     
