@@ -13,8 +13,7 @@
  * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
- * @version    2.0.0
- * @link       http://www.dynamiccodes.com/dynaportx/doc/libs/redirect
+ * @link       https://github.com/pnm1231/DynaPort-X/wiki
  * @since      File available since Release 0.2.0
  */
 
@@ -27,7 +26,7 @@
  * @subpackage  Libraries
  * @category    Libraries
  * @author      Prasad Nayanajith
- * @link        http://www.dynamiccodes.com/dynaportx/doc/libs/hash
+ * @link        https://github.com/pnm1231/DynaPort-X/wiki/Redirect-library
  */
 class Redirect {
 
