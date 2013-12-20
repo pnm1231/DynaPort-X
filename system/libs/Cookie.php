@@ -26,7 +26,7 @@
  * @subpackage  Libraries
  * @category    Libraries
  * @author      Prasad Nayanajith
- * @link        http://www.dynamiccodes.com/dynaportx/doc/libs/cookie
+ * @link        https://github.com/pnm1231/DynaPort-X/wiki/Cookie-library
  */
 class Cookie {
     

@@ -23,10 +23,10 @@
  * The session class which handles PHP sessions.
  *
  * @package     DynaPort X
- * @subpackage  Core
- * @category    Core
+ * @subpackage  Libraries
+ * @category    Libraries
  * @author      Prasad Nayanajith
- * @link        http://www.dynamiccodes.com/dynaportx/doc/core/session
+ * @link        https://github.com/pnm1231/DynaPort-X/wiki/Session-library
  */
 class Session {
     
