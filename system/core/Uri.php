@@ -106,7 +106,7 @@ class Uri {
             }
 
             // Get the URI.
-            $uri = ltrim(str_replace($glblParse['path'],'',$urlParse['path']),'/');
+            $uri = rtrim(ltrim(str_replace($glblParse['path'],'',$urlParse['path']),'/'),'/');
         }
 
         // Check whether Hooks are enabled.
