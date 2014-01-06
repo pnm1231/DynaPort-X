@@ -105,6 +105,7 @@ class Database extends PDO {
         }catch(Exception $e){
             new Error('Error with the database connection',500,$e);
         }
+        parent::setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     }
     
     /**
@@ -508,7 +509,7 @@ class Database extends PDO {
         try {
             $execute = $this->_qbSTH->execute();
         }catch(Exception $e){
-            new Error('Error with the database!',500,'DPX.Database.run: '.$e);
+            throw new Exception('DPX.Database.run: '.$e->getMessage()."\nQuery: {$query}");
         }
         
         if($execute==false){
