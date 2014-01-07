@@ -31,20 +31,19 @@
 class cURL {
     
     private $ch;
+    
+    public $error;
 
     function __construct(){
-        /*
-         * Check if cURL is installed
-         */
+        // Check if cURL is installed
         if(!function_exists('curl_init')){
             new Error('Sorry cURL is not installed!');
         }
         
-        /*
-         * Create a new cURL resource handle
-         */
+        // Create a new cURL resource handle
         $this->ch = curl_init();
         $this->setReturnType();
+        $this->set(CURLOPT_FAILONERROR,true);
     }
     
     /**
@@ -165,14 +164,13 @@ class cURL {
      * @return mixed The result
      */
     function output(){
-        /*
-         * Download the given URL, and return output
-         */
+        // Download the given URL, and return output
         $output = curl_exec($this->ch);
         
-        /*
-         * Close the cURL resource, and free system resources
-         */
+        // Update the error variable if there is one
+        $this->error = curl_error($this->ch);
+        
+        // Close the cURL resource, and free system resources
         curl_close($this->ch);
         
         return $output;
