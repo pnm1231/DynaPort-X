@@ -30,10 +30,20 @@
  */
 class cURL {
     
+    /**
+     * cURL handler
+     * 
+     * @var \curl 
+     */
     private $ch;
     
+    /**
+     * cURL error
+     * 
+     * @var string 
+     */
     public $error;
-
+    
     function __construct(){
         // Check if cURL is installed
         if(!function_exists('curl_init')){
@@ -174,6 +184,70 @@ class cURL {
         curl_close($this->ch);
         
         return $output;
+    }
+    
+    /**
+     * Simple GET request
+     * 
+     * @param string $url Target URL
+     * @return mixed
+     */
+    public static function get($url){
+        return self::simpleRequest('get',$url);
+    }
+    
+    /**
+     * Simple POST request
+     * 
+     * @param string $url Target URL
+     * @param array $parameters Parameters of POST
+     * @return mixed
+     */
+    public static function post($url,$parameters=array()){
+        return self::simpleRequest('post',$url,$parameters);
+    }
+    
+    /**
+     * Simple PUT request
+     * 
+     * @param string $url Target URL
+     * @param array $parameters Parameters of PUT
+     * @return mixed
+     */
+    public static function put($url,$parameters=array()){
+        return self::simpleRequest('put',$url,$parameters);
+    }
+    
+    /**
+     * Simple DELETE request
+     * 
+     * @param string $url Target URL
+     * @param array $parameters Parameters of DELETE
+     * @return mixed
+     */
+    public static function delete($url,$parameters=array()){
+        return self::simpleRequest('delete',$url,$parameters);
+    }
+    
+    /**
+     * Send a simple request
+     * 
+     * @param string $type Request type
+     * @param string $url Target URL
+     * @param array $parameters Parameters to send
+     * @return mixed
+     */
+    private static function simpleRequest($type,$url,$parameters=array()){
+        $curl = new cURL();
+        $curl->setUrl($url);
+        if($type=='post'){
+            $curl->setHttpPost($parameters);
+        }else if($type=='put'){
+            $curl->setHttpPut($parameters);
+        }else if($type=='put'){
+            $curl->setHttpDelete($parameters);
+        }
+        return $curl->output();
     }
 
 }
