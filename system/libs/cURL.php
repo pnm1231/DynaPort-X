@@ -44,6 +44,13 @@ class cURL {
      */
     public $error;
     
+    /**
+     * cURL error (static)
+     * 
+     * @var string
+     */
+    private static $errorStatic;
+    
     function __construct(){
         // Check if cURL is installed
         if(!function_exists('curl_init')){
@@ -238,6 +245,15 @@ class cURL {
     }
     
     /**
+     * Get the error
+     * 
+     * @return string The error message
+     */
+    public static function error(){
+        return self::$errorStatic;
+    }
+    
+    /**
      * Send a simple request
      * 
      * @param string $type Request type
@@ -255,7 +271,9 @@ class cURL {
         }else if($type=='put'){
             $curl->setHttpDelete($parameters);
         }
-        return $curl->output();
+        $output = $curl->output();
+        self::$errorStatic = $curl->error;
+        return $output;
     }
 
 }
