@@ -190,9 +190,17 @@ class cURL {
      * Simple GET request
      * 
      * @param string $url Target URL
+     * @param array $parameters Parameters of GET
      * @return mixed
      */
-    public static function get($url){
+    public static function get($url,$parameters=array()){
+        if(count($parameters)>0){
+            $params = array();
+            foreach($parameters AS $k=>$v){
+                $params[] = $k.'='.$v;
+            }
+            $url = rtrim($url,'?').'?'.implode('&',$params);
+        }
         return self::simpleRequest('get',$url);
     }
     
