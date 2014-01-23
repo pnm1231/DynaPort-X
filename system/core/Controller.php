@@ -31,6 +31,13 @@
 class Controller {
     
     /**
+     * Auto-load controllers
+     * 
+     * @var array Array of controllers
+     */
+    public $controllers = array();
+    
+    /**
      * Auto-load models
      * 
      * @var array Array of models
@@ -95,6 +102,13 @@ class Controller {
         if($this->models && is_array($this->models) && count($this->models)>0){
             foreach($this->models AS $model){
                 $this->load->model($model);
+            }
+        }
+        
+        // Load controllers that are requested to be auto-loaded.
+        if($this->controllers && is_array($this->controllers) && count($this->controllers)>0){
+            foreach($this->controllers AS $controller){
+                $this->load->controller($controller);
             }
         }
         
