@@ -126,7 +126,9 @@ class Database extends PDO {
             $select = preg_replace('@\ AS ([a-z0-9_-]+)`@i','` AS `$1`',$select);
             $select = preg_replace('@`([a-z]+)\(([a-z0-9_-]+)\)([^`]?)`@i','$1(`$2`)$3',$select);
         }
-        $this->_qbQuery['select'] = str_replace('.','`.`',$select);
+        $select = str_replace('.','`.`',$select);
+        $select = str_replace('`*`','*',$select);
+        $this->_qbQuery['select'] = $select;
         $this->_qbType = 'select';
         return $this;
     }
