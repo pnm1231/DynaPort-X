@@ -71,6 +71,13 @@ class Loader {
         // Remove previously stored arguments.
         $this->arguments = null;
         
+        // Store arguments if provided.
+        $arguments = func_get_args();
+        if($arguments>1){
+            unset($arguments[0]);
+            $this->arguments = $arguments;
+        }
+        
         return $this->loadComponent($name);
     }
     
@@ -87,6 +94,13 @@ class Loader {
         
         // Remove previously stored arguments.
         $this->arguments = null;
+        
+        // Store arguments if provided.
+        $arguments = func_get_args();
+        if($arguments>1){
+            unset($arguments[0]);
+            $this->arguments = $arguments;
+        }
         
         return $this->loadComponent($name);
     }
