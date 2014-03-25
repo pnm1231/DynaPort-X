@@ -202,7 +202,7 @@ class Loader {
             
             $this->controller->{$this->component}->{$componentName} = $object;
         
-            return true;
+            return $object;
             
         }else{
             new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.ucfirst($this->component).' \''.$name.'\' is not available.');
