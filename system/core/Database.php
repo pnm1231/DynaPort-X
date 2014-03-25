@@ -187,6 +187,11 @@ class Database extends PDO {
             $this->_qbBinds['b'.$count.'_0_'.$column_safe] = $value[0];
             $this->_qbBinds['b'.$count.'_1_'.$column_safe] = $value[1];
             
+        // IS and IS NOT operator
+        }else if(strtolower($operator)=='is' || strtolower($operator)=='is not'){
+            $operator = ' '.strtoupper($operator).' ';
+            $value_key = preg_replace('@([^a-zA-Z]+)@','',$value);
+            
         // EQUAL operator
         }else{
             // LIKE and NOT LIKE operator
