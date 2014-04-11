@@ -174,6 +174,16 @@ class Uri {
     public static function currentURL(){
         return 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'?'s':'').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     }
+    
+    /**
+     * Get the current URI
+     * 
+     * @return string Current URI
+     */
+    public static function currentUri(){
+        $url = self::currentURL();
+        return str_replace(GLBL_URL.'/','',$url);
+    }
 
 }
 
