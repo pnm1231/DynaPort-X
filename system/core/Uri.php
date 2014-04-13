@@ -182,7 +182,7 @@ class Uri {
      */
     public static function currentUri(){
         $url = self::currentURL();
-        return str_replace(GLBL_URL.'/','',$url);
+        return str_replace(GLBL_URL.'/','',strtok($url,'?'));
     }
 
 }
