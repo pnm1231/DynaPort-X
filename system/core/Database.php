@@ -124,11 +124,12 @@ class Database extends PDO {
         }
         if(preg_match('@(\(|as)@i',$select)){
             $select = preg_replace('@\ AS ([a-z0-9_-]+)`@i','` AS `$1`',$select);
-            $select = preg_replace('@`([a-z]+)\(([a-z0-9_-]+)\)([^`]?)`@i','$1(`$2`)$3',$select);
+            $select = preg_replace('@`([a-z]+)\((|[a-z0-9_*-]+)\)([^`]?)`@i','$1(`$2`)$3',$select);
         }
         $select = str_replace('.','`.`',$select);
         $select = str_replace('`SQL_CALC_FOUND_ROWS ','SQL_CALC_FOUND_ROWS `',$select);
         $select = str_replace('`*`','*',$select);
+        $select = str_replace('``','',$select);
         $this->_qbQuery['select'] = $select;
         $this->_qbType = 'select';
         return $this;
