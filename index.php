@@ -28,14 +28,14 @@ if(file_exists('application/config/global.php')){
     die('Error: Global configuration file is not available.');
 }
 
-// Include the class autload helper.
+// Load the class autload helper.
 if(file_exists('system/helpers/autoload.php')){
     require 'system/helpers/autoload.php';
 }else{
     die('Error: Auto-load helper is not available.');
 }
 
-// Load global configurations.
+// Load the exception handle helper.
 if(file_exists('system/helpers/exceptions.php')){
     require 'system/helpers/exceptions.php';
 }else{
