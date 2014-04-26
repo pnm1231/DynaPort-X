@@ -31,11 +31,18 @@
 class View {
     
     /**
-     * Whether the \View is loaded once.
+     * Whether the pre-view hook is attached.
      * 
      * @var bool
      */
-    private $_loadedOnce = false;
+    private static $_hookedPre = false;
+    
+    /**
+     * Whether the post-view hook is attached.
+     * 
+     * @var bool
+     */
+    private static $_hookedPost = false;
     
     /**
      * Render a view
@@ -47,9 +54,9 @@ class View {
         $file = Loader::pathnameToFile('view',$file);
         
         // Check whether Hooks are enabled.
-        if(GLBL_ENABLE_HOOKS==true && !$this->_loadedOnce){
+        if(GLBL_ENABLE_HOOKS==true && !self::$_hookedPre){
             
-            $this->_loadedOnce = true;
+            self::$_hookedPre = true;
             
             // Run hooks registered to pre-view.
             Hooks::run('dpx_pre_view');
@@ -66,6 +73,15 @@ class View {
             if($noerror==0){
                 new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not available.');
             }
+        }
+        
+        // Check whether Hooks are enabled.
+        if(GLBL_ENABLE_HOOKS==true && !self::$_hookedPost){
+            
+            self::$_hookedPost = true;
+            
+            // Run hooks registered to pre-view.
+            Hooks::run('dpx_post_view');
         }
     }
 

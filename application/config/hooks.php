@@ -19,6 +19,7 @@ dpx_pre_route       - Right after URI class but before routing the request.
 dpx_pre_controller  - Right after routing the request but before calling the controller.
 dpx_pre_model       - Right before calling the first model.
 dpx_pre_view        - Right before calling the first view.
+dpx_post_view       - Right after calling the first view.
 dpx_pre_end         - Before ending the execution
 
 /**
