@@ -87,6 +87,13 @@ class Controller {
     public $view;
     
     /**
+     * Preserved view object
+     * 
+     * @var \View
+     */
+    protected static $viewInstance;
+
+    /**
      * Stored variabled
      * 
      * @var array Variables
@@ -119,8 +126,15 @@ class Controller {
             }
         }
         
-        // Assign the View object.
-        $this->view = new View();
+        // Check if there is no preserved View instance.
+        // If there isn't, create a new View object.
+        // If there is one, use it as the View object.
+        if(self::$viewInstance){
+            $this->view = self::$viewInstance;
+        }else{
+            $this->view = new View();
+            self::$viewInstance = $this->view;
+        }
     }
     
     /**
