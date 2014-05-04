@@ -39,6 +39,13 @@ class Hooks {
     protected static $hooks = array();
     
     /**
+     * Store loaded hook objects
+     * 
+     * @var array Loaded hook objects
+     */
+    protected static $loadedHooks = array();
+
+    /**
      * Add a hook
      * 
      * @param string $point At which point this hook should get called
@@ -103,47 +110,31 @@ class Hooks {
                     // Check whether the hooked class is available.
                     if(class_exists($hook[2])){
                         
-                        // If the method is not set but parameters, consider it as Class parameters.
-                        if(empty($hook[3]) && !empty($hook[4])){
+                        // Check whether the hooked object is already created.
+                        // If not, create the object and store it for later use.
+                        if(!isset(self::$loadedHooks[$hook[2]])){
                             
-                            // Create the hooked object with parameters.
-                            $hook_class = new $hook[2]($hook[4]);
-                            
-                            // Remove parameters.
-                            $hook[4] = '';
-                            
-                        }else{
-                            
-                            // Create the hooked object.
-                            $hook_class = new $hook[2];
+                            // If the method is not set but parameters, consider it as Class parameters.
+                            if(empty($hook[3]) && !empty($hook[4])){
+
+                                // Create the hooked object with parameters.
+                                self::$loadedHooks[$hook[2]] = new $hook[2]($hook[4]);
+
+                                // Remove parameters.
+                                $hook[4] = '';
+
+                            }else{
+
+                                // Create the hooked object.
+                                self::$loadedHooks[$hook[2]] = new $hook[2];
+                            }
                         }
 
                         // Check if a method is also defined along with its existence.
-                        if(!empty($hook[3]) && method_exists($hook_class,$hook[3])){
-                            
-                            /*
-                            if(isset($hook[4]) && !empty($hook[4])){
-                                
-                                $hookArgs = $hook[4];
-                                
-                                // If the given argument is not an array, make it one.
-                                if(!is_array($hook[4])){
-                                    $hookArgs = array($hook[4]);
-                                }
-                                
-                                // Call the method with given arguments.
-                                call_user_func_array(array($hook_class,$hook[3]),$hookArgs);
-                                
-                            }else{
-
-                                // Call the method.
-                                $hook_class->{$hook[3]}();
-                                
-                            }
-                            */
+                        if(!empty($hook[3]) && method_exists(self::$loadedHooks[$hook[2]],$hook[3])){
                             
                             // Call the relavant method with parameters if available.
-                            Object::callMethod($hook_class,$hook[3],$hook[4]);
+                            Object::callMethod(self::$loadedHooks[$hook[2]],$hook[3],$hook[4]);
                         }
                     }
                 }
