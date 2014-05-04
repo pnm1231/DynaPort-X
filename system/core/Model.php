@@ -38,7 +38,7 @@ class Model {
     protected $db;
     
     /**
-     * Preserved database class
+     * Preserved database object
      * 
      * @var \Database
      */
