@@ -52,6 +52,17 @@ class View {
     public $data = array();
     
     /**
+     * HTML object
+     * 
+     * @var \class HTML
+     */
+    private $html;
+    
+    function __construct(){
+        $this->html = new HTML();
+    }
+    
+    /**
      * Render a view
      * 
      * @param string $file File (view) to render.
@@ -78,6 +89,9 @@ class View {
             if(isset($this->data) && is_array($this->data)){
                 extract($this->data);
             }
+            
+            // Make the HTML object accessible inside the view
+            $html = $this->html;
         
             include $file;
             
