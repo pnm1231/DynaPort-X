@@ -45,6 +45,13 @@ class View {
     private static $_hookedPost = false;
     
     /**
+     * Data that should be passed to views
+     * 
+     * @var array
+     */
+    public $data = array();
+    
+    /**
      * Render a view
      * 
      * @param string $file File (view) to render.
@@ -65,6 +72,12 @@ class View {
         // Check the availability of the view.
         // If available, print it. Otherwise, throw a 500 error.
         if(file_exists($file)){
+            
+            // Check if there are data to be passed to the view
+            // If so, extract them as variables
+            if(isset($this->data) && is_array($this->data)){
+                extract($this->data);
+            }
         
             include $file;
             
