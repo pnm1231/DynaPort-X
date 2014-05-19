@@ -26,7 +26,7 @@ class Log {
      * @return boolean
      */
     static function debug($message,$stack=null){
-        return $this->write(100,$message,$stack);
+        return self::write(100,$message,$stack);
     }
     
     /**
@@ -37,7 +37,7 @@ class Log {
      * @return boolean
      */
     static function info($message,$stack=null){
-        return $this->write(200,$message,$stack);
+        return self::write(200,$message,$stack);
     }
     
     /**
@@ -48,7 +48,7 @@ class Log {
      * @return boolean
      */
     static function notice($message,$stack=null){
-        return $this->write(250,$message,$stack);
+        return self::write(250,$message,$stack);
     }
     
     /**
@@ -59,7 +59,7 @@ class Log {
      * @return boolean
      */
     static function warning($message,$stack=null){
-        return $this->write(300,$message,$stack);
+        return self::write(300,$message,$stack);
     }
     
     /**
@@ -70,7 +70,7 @@ class Log {
      * @return boolean
      */
     static function error($message,$stack=null){
-        return $this->write(400,$message,$stack);
+        return self::write(400,$message,$stack);
     }
     
     /**
@@ -81,7 +81,7 @@ class Log {
      * @return boolean
      */
     static function critical($message,$stack=null){
-        return $this->write(500,$message,$stack);
+        return self::write(500,$message,$stack);
     }
     
     /**
@@ -92,7 +92,7 @@ class Log {
      * @return boolean
      */
     static function alert($message,$stack=null){
-        return $this->write(550,$message,$stack);
+        return self::write(550,$message,$stack);
     }
     
     /**
@@ -103,7 +103,7 @@ class Log {
      * @return boolean
      */
     static function emergency($message,$stack=null){
-        return $this->write(600,$message,$stack);
+        return self::write(600,$message,$stack);
     }
     
     /**
