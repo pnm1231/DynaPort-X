@@ -200,7 +200,17 @@ class Loader {
                 $this->controller->{$this->component} = new stdClass();
             }
             
-            $this->controller->{$this->component}->{$componentName} = $object;
+            // Assign the component name as the variable name
+            $variableName = $componentName;
+            
+            // Check if the same name is alredy being used
+            // If so, prepend the module name so it does not replace
+            if(isset($this->controller->{$this->component}->{$variableName})){
+                $variableName = $nameExpl[0].ucfirst($componentName);
+            }
+            
+            // Assign the component object to the variable name
+            $this->controller->{$this->component}->{$variableName} = $object;
         
             return $object;
             
