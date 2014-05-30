@@ -107,6 +107,11 @@ class Uri {
 
             // Get the URI.
             $uri = rtrim(ltrim(str_replace($glblParse['path'],'',$urlParse['path']),'/'),'/');
+            
+            // If the URI is 'index.php', consider it as empty.
+            if($uri=='index.php'){
+                $uri = '';
+            }
         }
 
         // Check whether Hooks are enabled.
