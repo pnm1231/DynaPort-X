@@ -66,10 +66,10 @@ class View {
      * Render a view
      * 
      * @param string $file File (view) to render.
+     * @param boolean $return Return the view instead of printing
+     * @return mixed
      */
-    public function render($file,$noerror=0){
-        
-        $file = Loader::pathnameToFile('view',$file);
+    public function render($file,$return=false){
         
         // Check whether Hooks are enabled.
         if(GLBL_ENABLE_HOOKS==true && !self::$_hookedPre){
@@ -79,6 +79,13 @@ class View {
             // Run hooks registered to pre-view.
             Hooks::run('dpx_pre_view');
         }
+        
+        // If $return is true, start the output buffer
+        if($return){
+            ob_start();
+        }
+        
+        $file = Loader::pathnameToFile('view',$file);
         
         // Check the availability of the view.
         // If available, print it. Otherwise, throw a 500 error.
@@ -96,10 +103,12 @@ class View {
             include $file;
             
         }else{
-            
-            if($noerror==0){
-                new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not available.');
-            }
+            new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not available.');
+        }
+        
+        // If the $return is true, get the output buffer content and clean it
+        if($return){
+            $content = ob_get_clean();
         }
         
         // Check whether Hooks are enabled.
@@ -109,6 +118,11 @@ class View {
             
             // Run hooks registered to pre-view.
             Hooks::run('dpx_post_view');
+        }
+        
+        // If the $return is true, return the content
+        if($return){
+            return $content;
         }
     }
 
