@@ -107,7 +107,7 @@ class HTML {
      * @return string
      */
     public function img($file){
-        return $this->commonStatic('img',$file);
+        return $this->commonStatic('images',$file);
     }
     
     /**
@@ -120,7 +120,7 @@ class HTML {
      * @return string
      */
     public function imgT($file,$width=0,$height=0,$alt=null){
-        return $this->commonStaticT('img',$file,$width,$height,$alt);
+        return $this->commonStaticT('images',$file,$width,$height,$alt);
     }
     
     /**
@@ -130,7 +130,7 @@ class HTML {
      * @return string
      */
     public function image($file){
-        return $this->commonStatic('img',$file);
+        return $this->commonStatic('images',$file);
     }
     
     /**
@@ -143,7 +143,7 @@ class HTML {
      * @return string
      */
     public function imageT($file,$width=0,$height=0,$alt=null){
-        return $this->commonStaticT('img',$file,$width,$height,$alt);
+        return $this->commonStaticT('images',$file,$width,$height,$alt);
     }
     
     /**
