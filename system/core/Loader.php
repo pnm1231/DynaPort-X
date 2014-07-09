@@ -51,6 +51,13 @@ class Loader {
      */
     private $arguments;
     
+    /**
+     * Name of the component
+     * 
+     * @var string
+     */
+    private static $name;
+    
     function __construct(&$controller){
         
         // Store the DynaPort X controller instance.
@@ -174,12 +181,20 @@ class Loader {
                 
             }
             
+            // Convert the component's variable into an object.
+            if(!is_object($this->controller->{$this->component})){
+                $this->controller->{$this->component} = new stdClass();
+            }
+            
+            // Generate the safe name that does not get replaced
+            $componentNameSafe = str_replace('/','_',self::$name);
+            
             // Check if any arguments are passed.
             if(count($this->arguments)==0){
                 
                 // Create the object without any arguments.
                 try {
-                    $object = new $className();
+                    $this->controller->{$this->component}->{$componentNameSafe} = new $className();
                 }catch(Exception $e){
                     new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.$e->getMessage());
                 }
@@ -189,30 +204,16 @@ class Loader {
                 // Create the object by passing the arguments.
                 try {
                     $reflect  = new ReflectionClass($className);
-                    $object = $reflect->newInstanceArgs($this->arguments);
+                    $this->controller->{$this->component}->{$componentNameSafe} = $reflect->newInstanceArgs($this->arguments);
                 }catch(Exception $e){
                     new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.$e->getMessage());
                 }
             }
             
-            // Convert the component's variable into an object.
-            if(!is_object($this->controller->{$this->component})){
-                $this->controller->{$this->component} = new stdClass();
-            }
-            
-            // Assign the component name as the variable name
-            $variableName = $componentName;
-            
-            // Check if the same name is alredy being used
-            // If so, prepend the module name so it does not replace
-            if(isset($this->controller->{$this->component}->{$variableName})){
-                $variableName = $nameExpl[0].ucfirst($componentName);
-            }
-            
-            // Assign the component object to the variable name
-            $this->controller->{$this->component}->{$variableName} = $object;
+            // Assign the component object to the short component name
+            $this->controller->{$this->component}->{$componentName} = &$this->controller->{$this->component}->{$componentNameSafe};
         
-            return $object;
+            return $this->controller->{$this->component}->{$componentNameSafe};
             
         }else{
             new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.ucfirst($this->component).' \''.$name.'\' is not available.');
@@ -224,9 +225,10 @@ class Loader {
      * 
      * @param string $component Component type
      * @param string $name Component name
+     * @param string $module Module name
      * @return string File and path
      */
-    static function pathnameToFile($component,$name){
+    static function pathnameToFile($component,$name,$module=null){
         
         // Sanitize the class path/name.
         $name = preg_replace('@([^A-z0-9\/-])@','',$name);
@@ -268,11 +270,17 @@ class Loader {
                     // Prepend the current module to the component name.
                     $name = Registry::get('dpx_module').'/'.$name;
                 }
+                
+                // Store the full name of the component
+                self::$name = $name;
 
                 // Inject the component type to the first separator.
                 $name = preg_replace('@/@','/'.$component.'s/',$name,1);
 
             }else{
+                
+                // Store the full name of the component
+                self::$name = $name;
             
                 // Prepend the component type to the name.
                 $name = $component.'s/'.$name;
