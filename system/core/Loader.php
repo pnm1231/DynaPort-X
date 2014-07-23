@@ -51,13 +51,6 @@ class Loader {
      */
     private $arguments;
     
-    /**
-     * Name of the component
-     * 
-     * @var string
-     */
-    private static $name;
-    
     function __construct(&$controller){
         
         // Store the DynaPort X controller instance.
@@ -187,7 +180,7 @@ class Loader {
             }
             
             // Generate the safe name that does not get replaced
-            $componentNameSafe = str_replace('/','_',self::$name);
+            $componentNameSafe = str_replace('/','_',$name);
             
             // Check if any arguments are passed.
             if(count($this->arguments)==0){
@@ -270,17 +263,11 @@ class Loader {
                     // Prepend the current module to the component name.
                     $name = Registry::get('dpx_module').'/'.$name;
                 }
-                
-                // Store the full name of the component
-                self::$name = $name;
 
                 // Inject the component type to the first separator.
                 $name = preg_replace('@/@','/'.$component.'s/',$name,1);
 
             }else{
-                
-                // Store the full name of the component
-                self::$name = $name;
             
                 // Prepend the component type to the name.
                 $name = $component.'s/'.$name;
