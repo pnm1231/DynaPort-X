@@ -115,6 +115,7 @@ class Database extends PDO {
      * @return \Database
      */
     function select($columns='*'){
+        $this->reset();
         if(is_array($columns) && count($columns)>0){
             $select = '`'.implode('`,`',$columns).'`';
         }else if($columns!='*'){
@@ -389,6 +390,7 @@ class Database extends PDO {
      * @return \Database
      */
     function update($table){
+        $this->reset();
         $this->_qbQuery['update'] = $table;
         $this->_qbType = 'update';
         return $this;
@@ -430,6 +432,7 @@ class Database extends PDO {
      * @return \Database
      */
     function delete($table=null){
+        $this->reset();
         $this->_qbQuery['delete'] = true;
         $this->_qbType = 'delete';
         if($table){
@@ -445,6 +448,7 @@ class Database extends PDO {
      * @return \Database
      */
     function insert($table){
+        $this->reset();
         $this->_qbQuery['insert'] = $table;
         $this->_qbType = 'insert';
         return $this;
@@ -530,7 +534,6 @@ class Database extends PDO {
         }
         
         if($this->_qbType=='select'){
-            $this->reset();
             return $this;
         }else{
             if($this->_qbType=='insert'){
@@ -538,7 +541,6 @@ class Database extends PDO {
             }else if($this->_qbType=='update' || $this->_qbType=='delete'){
                 $this->_affectedRows = $this->_qbSTH->rowCount();
             }
-            $this->reset();
             return $execute;
         }
     }
