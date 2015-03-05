@@ -6,7 +6,7 @@
  * A simple yet powerful PHP framework for rapid application development.
  *
  * Licensed under BSD license
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
@@ -29,70 +29,70 @@
  * @link        http://www.dynamiccodes.com/dynaportx/doc/core/database
  */
 class Database extends PDO {
-    
+
     /**
      * Last inserted ID
-     * 
+     *
      * @var integer
      */
     private $_lastInsertId;
-    
+
     /**
      * Affected rows count
-     * 
+     *
      * @var integer
      */
     private $_affectedRows;
-    
+
     /**
      * Whether a transaction has initiated
-     * 
+     *
      * @var bool
      */
     private $_txStarted = false;
-    
+
     /**
      * Failed transactions count
-     * 
+     *
      * @var integer
      */
     private $_txFailedCount = 0;
-    
+
     /**
      * PDO Fetch Mode
-     * 
+     *
      * @var constant
      */
     private $_gbFetchMode = PDO::FETCH_ASSOC;
-    
+
     /**
      * Query builder type
-     * 
+     *
      * @var string select/update/insert/delete
      */
     private $_qbType;
-    
+
     /**
      * Query
-     * 
+     *
      * @var array
      */
     private $_qbQuery = array();
-    
+
     /**
      * Binding values
-     * 
+     *
      * @var array
      */
     private $_qbBinds = array();
-    
+
     /**
      * Statement handler
      */
     private $_qbSTH;
 
     /**
-     * 
+     *
      * @param string $DB_TYPE Database type (mysql/mssql/etc.)
      * @param string $DB_HOST Database location
      * @param string $DB_NAME Database name
@@ -107,10 +107,10 @@ class Database extends PDO {
         }
         parent::setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     }
-    
+
     /**
      * SELECT statement
-     * 
+     *
      * @param mixed $columns Column(s)
      * @return \Database
      */
@@ -135,26 +135,26 @@ class Database extends PDO {
         $this->_qbType = 'select';
         return $this;
     }
-    
+
     /**
      * FROM statement
-     * 
+     *
      * @param mixed $table Table name(s)
      * @return \Database
      */
     function from($table){
         if(is_array($table) && count($table)>0){
-            $from = implode(',',$table);
+            $from = implode('`,`',$table);
         }else{
             $from = $table;
         }
-        $this->_qbQuery['from'][] = $from;
+        $this->_qbQuery['from'][] = '`'.$from.'`';
         return $this;
     }
-    
+
     /**
      * WHERE statement
-     * 
+     *
      * @param string $column Column name
      * @param string $value Value to find
      * @param string $operator Operator type
@@ -164,7 +164,7 @@ class Database extends PDO {
         $column_safe = str_replace('.','_',$column);
         $column = str_replace('.','`.`',$column);
         $count = isset($this->_qbQuery['where'])?count($this->_qbQuery['where']):0;
-        
+
         // IN operator
         if(strtolower($operator)=='in'){
             $operator = ' IN ';
@@ -180,8 +180,8 @@ class Database extends PDO {
                 $this->_qbBinds['i'.$count.'_'.$column_safe] = $value;
             }
             $value_key.= ')';
-            
-        // BETWEEN operator
+
+            // BETWEEN operator
         }else if(strtolower($operator)=='between'){
             $operator = ' BETWEEN ';
             $value_key = ':b'.$count.'_0_'.$column_safe;
@@ -189,13 +189,13 @@ class Database extends PDO {
             $value_key.= ':b'.$count.'_1_'.$column_safe;
             $this->_qbBinds['b'.$count.'_0_'.$column_safe] = $value[0];
             $this->_qbBinds['b'.$count.'_1_'.$column_safe] = $value[1];
-            
-        // IS and IS NOT operator
+
+            // IS and IS NOT operator
         }else if(strtolower($operator)=='is' || strtolower($operator)=='is not'){
             $operator = ' '.strtoupper($operator).' ';
             $value_key = preg_replace('@([^a-zA-Z]+)@','',$value);
-            
-        // EQUAL operator
+
+            // EQUAL operator
         }else{
             // LIKE and NOT LIKE operator
             if(strtolower($operator)=='like' || strtolower($operator)=='not like'){
@@ -204,45 +204,45 @@ class Database extends PDO {
             $value_key = ':w'.$count.'_'.$column_safe;
             $this->_qbBinds['w'.$count.'_'.$column_safe] = $value;
         }
-        
+
         $this->_qbQuery['where'][] = '`'.$column.'`'.$operator.$value_key.' AND ';
-        
+
         return $this;
     }
-    
+
     /**
      * Open bracket
-     * 
+     *
      * @return \Database
      */
     function where_open(){
         $this->_qbQuery['where'][] = '(';
         return $this;
     }
-    
+
     /**
      * Close bracket
-     * 
+     *
      * @return \Database
      */
     function where_close(){
         $this->_qbQuery['where'][] = ') AND ';
         return $this;
     }
-    
+
     /**
      * AND operator
-     * 
+     *
      * @return \Database
      */
     function where_and(){
         $this->_qbQuery['where'][] = ' AND ';
         return $this;
     }
-    
+
     /**
      * OR operator
-     * 
+     *
      * @return \Database
      */
     function where_or(){
@@ -250,10 +250,10 @@ class Database extends PDO {
         $this->_qbQuery['where'][] = ' OR ';
         return $this;
     }
-    
+
     /**
      * JOIN Statement
-     * 
+     *
      * @param string $column1 Column 1
      * @param string $column2 Column 2
      * @return \Database
@@ -264,10 +264,10 @@ class Database extends PDO {
         $this->_qbQuery['where'][] = '`'.$column1.'`=`'.$column2.'` AND';
         return $this;
     }
-    
+
     /**
      * RIGHT JOIN statement
-     * 
+     *
      * @param string $table Table name
      * @param string $column1 Column 1
      * @param string $column2 Column 2
@@ -279,10 +279,10 @@ class Database extends PDO {
         $this->_qbQuery['from'][] = 'RIGHT JOIN `'.$table.'` ON `'.$column1.'`=`'.$column2.'`';
         return $this;
     }
-    
+
     /**
      * LEFT JOIN statement
-     * 
+     *
      * @param string $table Table name
      * @param string $column1 Column 1
      * @param string $column2 Column 2
@@ -294,17 +294,17 @@ class Database extends PDO {
         $this->_qbQuery['from'][] = 'LEFT JOIN `'.$table.'` ON `'.$column1.'`=`'.$column2.'`';
         return $this;
     }
-    
+
     function inner_join($table,$column1,$column2){
         $column1 = str_replace('.','`.`',$column1);
         $column2 = str_replace('.','`.`',$column2);
         $this->_qbQuery['from'][] = 'INNER JOIN `'.$table.'` ON `'.$column1.'`=`'.$column2.'`';
         return $this;
     }
-    
+
     /**
      * GROUP BY statement
-     * 
+     *
      * @param mixed $column Column(s)
      * @return \Database
      */
@@ -318,10 +318,10 @@ class Database extends PDO {
         $this->_qbQuery['group'] = '`'.$group.'`';
         return $this;
     }
-    
+
     /**
      * ORDER BY statement
-     * 
+     *
      * @param mixed $column Column(s) or RAND
      * @param string $type ASC or DESC
      * @return \Database
@@ -330,8 +330,8 @@ class Database extends PDO {
         // Check whether the order is for random
         if(!is_array($column) && strtolower($column)=='rand'){
             $this->_qbQuery['order'][] = 'RAND()';
-            
-        // If not random...
+
+            // If not random...
         }else{
             // Check whether an array was provided (multiple fields)
             if(is_array($column) && count($column)>0){
@@ -341,25 +341,25 @@ class Database extends PDO {
                     $orderArr[] = '`'.$col.'` '.strtoupper($ord);
                 }
                 $order = implode(',',$orderArr);
-                
-            // If not, use the simple 'column TYPE' approach
+
+                // If not, use the simple 'column TYPE' approach
             }else{
                 $order = str_replace(',','`,`',$column);
                 $order = '`'.$order.'` '.strtoupper($type);
             }
-            
+
             // Break table names and fields properly
             $order = str_replace('.','`.`',$order);
-            
+
             // Add it to the query builder
             $this->_qbQuery['order'][] = $order;
         }
         return $this;
     }
-    
+
     /**
      * OFFSET statement
-     * 
+     *
      * @param integer $num Start from
      * @return \Database
      */
@@ -369,10 +369,10 @@ class Database extends PDO {
         }
         return $this;
     }
-    
+
     /**
      * LIMIT statement
-     * 
+     *
      * @param integer $num No. of records
      * @return \Database
      */
@@ -382,23 +382,23 @@ class Database extends PDO {
         }
         return $this;
     }
-    
+
     /**
      * UPDATE statement
-     * 
+     *
      * @param string $table Table name
      * @return \Database
      */
     function update($table){
         $this->reset();
-        $this->_qbQuery['update'] = $table;
+        $this->_qbQuery['update'] = '`'.$table.'`';
         $this->_qbType = 'update';
         return $this;
     }
-    
+
     /**
      * SET statement
-     * 
+     *
      * @param string $column Column name
      * @param string $value Value to update
      * @return \Database
@@ -409,10 +409,10 @@ class Database extends PDO {
         $this->_qbBinds['s_'.$column_safe] = $value;
         return $this;
     }
-    
+
     /**
      * SET using an Array
-     * 
+     *
      * @param array $values An associative array of data
      * @return \Database
      */
@@ -424,10 +424,10 @@ class Database extends PDO {
         }
         return $this;
     }
-    
+
     /**
      * DELETE statement
-     * 
+     *
      * @param string $table Table name
      * @return \Database
      */
@@ -440,23 +440,23 @@ class Database extends PDO {
         }
         return $this;
     }
-    
+
     /**
      * INSERT INTO statement
-     * 
+     *
      * @param string $table Table name
      * @return \Database
      */
     function insert($table){
         $this->reset();
-        $this->_qbQuery['insert'] = $table;
+        $this->_qbQuery['insert'] = '`'.$table.'`';
         $this->_qbType = 'insert';
         return $this;
     }
-    
+
     /**
      * Execute the query
-     * 
+     *
      * @return \Database
      */
     function run(){
@@ -474,15 +474,15 @@ class Database extends PDO {
                 $query = 'SELECT '.$this->_qbQuery['select'];
                 break;
         }
-        
+
         if(isset($this->_qbQuery['set'])){
             $query.= ' SET '.implode(',',$this->_qbQuery['set']);
         }
-        
+
         if(isset($this->_qbQuery['from'])){
             $query.= ' FROM '.implode(' ',$this->_qbQuery['from']);
         }
-        
+
         if(isset($this->_qbQuery['where'])){
             $query.= ' WHERE ';
             foreach($this->_qbQuery['where'] AS $v){
@@ -494,24 +494,24 @@ class Database extends PDO {
             $rep[] = '';
             $query = preg_replace($pat,$rep,$query);
         }
-        
+
         if(isset($this->_qbQuery['group'])){
             $query.= ' GROUP BY '.$this->_qbQuery['group'];
         }
-        
+
         if(isset($this->_qbQuery['order'])){
             $query.= ' ORDER BY ';
             $query.= implode(',',$this->_qbQuery['order']);
         }
-        
+
         if(isset($this->_qbQuery['limit'])){
             $query.= ' LIMIT '.$this->_qbQuery['limit'];
         }
-        
+
         if(isset($this->_qbQuery['offset'])){
             $query.= ' OFFSET '.$this->_qbQuery['offset'];
         }
-        
+
         $this->_qbSTH = $this->prepare($query);
         if(is_array($this->_qbBinds) && count($this->_qbBinds)>0){
             foreach($this->_qbBinds as $k=>$v){
@@ -524,7 +524,7 @@ class Database extends PDO {
         }catch(Exception $e){
             throw new Exception('DPX.Database.run: '.$e->getMessage()."\nQuery: {$query}");
         }
-        
+
         if($execute==false){
             if($this->_txStarted==true){
                 $this->_txFailedCount++;
@@ -532,7 +532,7 @@ class Database extends PDO {
                 throw new Exception('The query returned false!');
             }
         }
-        
+
         if($this->_qbType=='select'){
             return $this;
         }else{
@@ -544,45 +544,45 @@ class Database extends PDO {
             return $execute;
         }
     }
-    
+
     /**
      * Fetch one row
-     * 
+     *
      * @return array Results
      */
     function fetchOne(){
         $this->run();
         return $this->_qbSTH->fetch($this->_gbFetchMode);
     }
-    
+
     /**
      * Fetch all rows
-     * 
+     *
      * @return array Results
      */
     function fetch(){
         $this->run();
         return $this->_qbSTH->fetchAll($this->_gbFetchMode);
     }
-    
+
     /**
      * Last inserted ID
-     * 
+     *
      * @return integer ID
      */
     function id(){
         return $this->_lastInsertId;
     }
-    
+
     /**
      * Affected rows
-     * 
+     *
      * @return integer No. of rows
      */
     function affected(){
         return $this->_affectedRows;
     }
-    
+
     /**
      * Reset query builder
      */
@@ -591,10 +591,10 @@ class Database extends PDO {
         $this->_qbQuery = null;
         $this->_qbType = null;
     }
-    
+
     /**
      * Initiate a transaction
-     * 
+     *
      * @return boolean
      */
     function txStart(){
@@ -605,10 +605,10 @@ class Database extends PDO {
             return $this->_txStarted;
         }
     }
-    
+
     /**
      * End a transaction
-     * 
+     *
      * @return boolean
      */
     function txEnd(){
@@ -627,13 +627,13 @@ class Database extends PDO {
     }
 
     /**
-    * Select - raw query with binding
-    * 
-    * @param string $sql An SQL string
-    * @param array $array Paramters to bind
-    * @param constant $fetchMode A PDO Fetch mode
-    * @return mixed An array with results
-    */
+     * Select - raw query with binding
+     *
+     * @param string $sql An SQL string
+     * @param array $array Paramters to bind
+     * @param constant $fetchMode A PDO Fetch mode
+     * @return mixed An array with results
+     */
     public function select_raw($sql,$array=array(),$fetchMode=PDO::FETCH_ASSOC){
         $sth = $this->prepare($sql);
         if(is_array($array) && count($array)>0){
@@ -645,10 +645,10 @@ class Database extends PDO {
         $sth->execute();
         return $sth->fetchAll($fetchMode);
     }
-    
+
     /**
      * Select - extend using parameters for each
-     * 
+     *
      * @param string $fields Fields to return (* or field1,field2)
      * @param string $table The name of the table
      * @param array $array An associative array of data for WHERE
@@ -659,7 +659,7 @@ class Database extends PDO {
      */
     public function select_extend($fields,$table,$array=array(),$group=array(),$order=array(),$limit=0,$fetchMode=PDO::FETCH_ASSOC){
         $sql = "SELECT {$fields} FROM {$table}";
-        
+
         if(is_array($array) && count($array)>0){
             $sql.= ' WHERE ';
             foreach($array as $key=>$value){
@@ -677,13 +677,13 @@ class Database extends PDO {
             }
             $sql = rtrim($sql,' AND ');
         }
-        
+
         if(is_array($group) && count($group)>0){
             $group = implode(',',$group);
             $group = preg_replace('/[^a-z0-9_\(\),]+/i','',$group);
             $sql.= " GROUP BY {$group}";
         }
-        
+
         if(is_array($order) && count($order)==1){
             $orderArrKeys = array_keys($order);
             $orderArr[0] = $orderArrKeys[0];
@@ -698,13 +698,13 @@ class Database extends PDO {
             $order = (count($orderArr)>1)?implode(' ',$orderArr):$orderArr[0];
             $sql.= " ORDER BY {$order}";
         }
-        
+
         if(is_array($limit) && count($limit)==2){
             $sql.= " LIMIT {$limit[0]},{$limit[1]}";
         }else if(!is_array($limit) && $limit>0){
             $sql.= " LIMIT 0,{$limit}";
         }
-        
+
         $sth = $this->prepare($sql);
         if(is_array($array) && count($array)>0){
             foreach($array as $key=>$value){
@@ -719,12 +719,12 @@ class Database extends PDO {
     }
 
     /**
-    * Insert - extend
-    * 
-    * @param string $table A name of table to insert into
-    * @param array $data An associative array
-    * @return bool true/false
-    */
+     * Insert - extend
+     *
+     * @param string $table A name of table to insert into
+     * @param array $data An associative array
+     * @return bool true/false
+     */
     public function insert_extend($table,$data){
         $fieldNames = implode('`, `',array_keys($data));
         $fieldValues = ':'.implode(', :',array_keys($data));
@@ -742,15 +742,15 @@ class Database extends PDO {
     }
 
     /**
-    * Update - extend
-    * 
-    * @param string $table Name of the table to insert into
-    * @param array $data An associative array of data to be modified
-    * @param mixed $where An associative array or the WHERE query part
-    * @return bool true/false
-    */
+     * Update - extend
+     *
+     * @param string $table Name of the table to insert into
+     * @param array $data An associative array of data to be modified
+     * @param mixed $where An associative array or the WHERE query part
+     * @return bool true/false
+     */
     public function update_extend($table,$data,$where=array()){
-        
+
         $fieldDetails = NULL;
         if(is_array($data) && count($data)>0){
             foreach($data as $key=>$value) {
@@ -758,7 +758,7 @@ class Database extends PDO {
             }
             $fieldDetails = rtrim($fieldDetails,',');
         }
-        
+
         $whereSQL = '';
         if(is_array($where) && count($where)>0){
             $whereSQL = 'WHERE ';
@@ -771,7 +771,7 @@ class Database extends PDO {
                 $whereSQL.= $where;
             }
         }
-        
+
         $sth = $this->prepare("UPDATE {$table} SET {$fieldDetails} {$whereSQL}");
 
         if(is_array($data) && count($data)>0){
@@ -794,15 +794,15 @@ class Database extends PDO {
     }
 
     /**
-    * Delete - extend
-    * 
-    * @param string $table Name of the table to delete from
-    * @param string $where An associative array of data for WHERE
-    * @param integer $limit Limit results
-    * @return integer Affected rows
-    */
+     * Delete - extend
+     *
+     * @param string $table Name of the table to delete from
+     * @param string $where An associative array of data for WHERE
+     * @param integer $limit Limit results
+     * @return integer Affected rows
+     */
     public function delete_extend($table,$where,$limit=1){
-        
+
         if(is_array($where) && count($where)>0){
             $whereSQL = 'WHERE ';
             if(is_array($where) && count($where)>0){
@@ -828,7 +828,7 @@ class Database extends PDO {
         $this->_affectedRows = $sth->rowCount();
         return $this->_affectedRows;
     }
-    
+
     public function raw($sql,$array=array()){
         $sth = $this->prepare($sql);
         if(is_array($array) && count($array)>0){
