@@ -51,6 +51,13 @@ class Loader {
      */
     private $arguments;
     
+    /**
+     * Name of the component
+     * 
+     * @var string
+     */
+    private static $name;
+    
     function __construct(&$controller){
         
         // Store the DynaPort X controller instance.
@@ -136,7 +143,7 @@ class Loader {
      * @return bool
      */
     private function loadComponent($name){
-        
+
         $file = $this->pathnameToFile($this->component,$name);
         
         // Check if the component file is available.
@@ -145,7 +152,7 @@ class Loader {
             // Require the file once.
             require_once $file;
             
-            // Explode the component name by the seperators.
+            // Explode the component name by the separators.
             $nameExpl = explode('/',$name);
             
             // Initialize the component name.
@@ -178,9 +185,17 @@ class Loader {
             if(!is_object($this->controller->{$this->component})){
                 $this->controller->{$this->component} = new stdClass();
             }
-            
-            // Generate the safe name that does not get replaced
-            $componentNameSafe = str_replace('/','_',$name);
+
+            // Check if the component is a controller or a model.
+            if($this->component=='controller' || $this->component=='model'){
+
+                // Generate the safe name that does not get replaced
+                $componentNameSafe = str_replace('/', '_', self::$name);
+            }else{
+
+                // Keep the same name.
+                $componentNameSafe = $className;
+            }
             
             // Check if any arguments are passed.
             if(count($this->arguments)==0){
@@ -196,7 +211,6 @@ class Loader {
                 
                 // Create the object by passing the arguments.
                 try {
-                    $reflect  = new ReflectionClass($className);
                     $this->controller->{$this->component}->{$componentNameSafe} = $reflect->newInstanceArgs($this->arguments);
                 }catch(Exception $e){
                     new Error('Unable to load a component.',500,'DPX.Loader.loadComponent: '.$e->getMessage());
@@ -263,11 +277,17 @@ class Loader {
                     // Prepend the current module to the component name.
                     $name = Registry::get('dpx_module').'/'.$name;
                 }
+                
+                // Store the full name of the component
+                self::$name = $name;
 
                 // Inject the component type to the first separator.
                 $name = preg_replace('@/@','/'.$component.'s/',$name,1);
 
             }else{
+                
+                // Store the full name of the component
+                self::$name = $name;
             
                 // Prepend the component type to the name.
                 $name = $component.'s/'.$name;
