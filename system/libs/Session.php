@@ -29,12 +29,32 @@
  * @link        https://github.com/pnm1231/DynaPort-X/wiki/Session-library
  */
 class Session {
+
+    /**
+     * @var array Session keys and values
+     */
+    public $data;
+
+    function __construct(){
+        // Check whether session autostart has been set. If not, do nothing.
+        if(GLBL_AUTOSTART_SESSION!=true){
+            $this->data = null;
+            return;
+        }
+        
+        // Check whether the session has started already. If not, start it.
+        if(session_id()==''){
+            self::init();
+        }
+    }
     
     /**
      * Initialize a PHP session
      */
     public static function init() {
         session_start();
+        
+        $this->data = &$_SESSION;
     }
 
     /**
@@ -49,7 +69,7 @@ class Session {
             self::init();
         }
         
-        $_SESSION[$key] = $value;
+        $this->data[$key] = $value;
     }
     
     /**
@@ -64,8 +84,8 @@ class Session {
             self::init();
         }
         
-        if(isset($_SESSION[$key])){
-            return $_SESSION[$key];
+        if(isset($this->data[$key])){
+            return $this->data[$key];
         }
     }
     
@@ -81,8 +101,8 @@ class Session {
             self::init();
         }
         
-        if(isset($_SESSION[$key])){
-            unset($_SESSION[$key]);
+        if(isset($this->data[$key])){
+            unset($this->data[$key]);
         }
         return true;
     }

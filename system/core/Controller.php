@@ -94,6 +94,13 @@ class Controller {
     protected static $viewInstance;
 
     /**
+     * Session object
+     * 
+     * @var \Session
+     */
+    public $session;
+
+    /**
      * Stored variabled
      * 
      * @var array Variables
@@ -135,6 +142,9 @@ class Controller {
             $this->view = new View();
             self::$viewInstance = $this->view;
         }
+
+        // Assign the Session object.
+        $this->session = new Session();
     }
     
     /**
