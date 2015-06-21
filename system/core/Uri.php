@@ -177,7 +177,7 @@ class Uri {
      * @return string Current URL
      */
     public static function currentURL(){
-        return 'http'.(isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']=='on'?'s':'').'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        return $this->get_protocol().'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     }
     
     /**
@@ -188,6 +188,19 @@ class Uri {
     public static function currentUri(){
         $url = self::currentURL();
         return str_replace(GLBL_URL.'/','',strtok($url,'?'));
+    }
+    
+    /**
+     * Get the request protocol
+     * 
+     * @return string http OR https
+     */
+    private function get_protocol(){
+        if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])){
+            return $_SERVER['HTTP_X_FORWARDED_PROTO'];
+        }else{
+            return isset($_SERVER['HTTPS']) && !empty($_SERVER['HTTPS'])?'https':'http';
+        }
     }
 
 }

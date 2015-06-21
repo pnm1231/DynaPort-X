@@ -33,12 +33,12 @@ class Session {
     /**
      * @var array Session keys and values
      */
-    public $data;
+    public static $data;
 
     function __construct(){
         // Check whether session autostart has been set. If not, do nothing.
         if(GLBL_AUTOSTART_SESSION!=true){
-            $this->data = null;
+            self::$data = null;
             return;
         }
         
@@ -54,7 +54,7 @@ class Session {
     public static function init() {
         session_start();
         
-        $this->data = &$_SESSION;
+        self::$data = &$_SESSION;
     }
 
     /**
@@ -69,7 +69,7 @@ class Session {
             self::init();
         }
         
-        $this->data[$key] = $value;
+        self::$data[$key] = $value;
     }
     
     /**
@@ -84,8 +84,8 @@ class Session {
             self::init();
         }
         
-        if(isset($this->data[$key])){
-            return $this->data[$key];
+        if(isset(self::$data[$key])){
+            return self::$data[$key];
         }
     }
     
@@ -101,8 +101,8 @@ class Session {
             self::init();
         }
         
-        if(isset($this->data[$key])){
-            unset($this->data[$key]);
+        if(isset(self::$data[$key])){
+            unset(self::$data[$key]);
         }
         return true;
     }
