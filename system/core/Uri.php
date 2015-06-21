@@ -177,7 +177,7 @@ class Uri {
      * @return string Current URL
      */
     public static function currentURL(){
-        return $this->get_protocol().'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
+        return self::get_protocol().'://'.$_SERVER['SERVER_NAME'].$_SERVER['REQUEST_URI'];
     }
     
     /**
@@ -195,7 +195,7 @@ class Uri {
      * 
      * @return string http OR https
      */
-    private function get_protocol(){
+    private static function get_protocol(){
         if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])){
             return $_SERVER['HTTP_X_FORWARDED_PROTO'];
         }else{
