@@ -38,9 +38,11 @@ class Cookie {
      * @param int $expire Expire unix timestamp (optional)
      * @param string $path Path (optional)
      * @param string $domain Domain (optional)
+     * @param boolean $secure Transmit over https (optional)
+     * @param boolean $http_only Accessible only through HTTP (optional)
      * @return boolean
      */
-    public static function set($key,$value,$expire=null,$path='/',$domain=null){
+    public static function set($key,$value,$expire=null,$path='/',$domain=null,$secure=null,$http_only=null){
         if($domain==null){
             // If the app is running on localhost, keep the domain as null.
             // Otherwise, make it the server name (domain).
@@ -48,7 +50,7 @@ class Cookie {
                 $domain = $_SERVER['SERVER_NAME'];
             }
         }
-        setcookie($key,$value,$expire,$path,$domain);
+        setcookie($key,$value,$expire,$path,$domain,$secure,$http_only);
         return true;
     }
     
