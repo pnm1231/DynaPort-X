@@ -103,7 +103,7 @@ class Database extends PDO {
         try{
             parent::__construct($DB_TYPE.':host='.$DB_HOST.';dbname='.$DB_NAME,$DB_USER,$DB_PASS);
         }catch(Exception $e){
-            new Error('Error with the database connection',500,$e);
+            new DPxError('Error with the database connection',500,$e);
         }
         parent::setAttribute(PDO::ATTR_ERRMODE,PDO::ERRMODE_EXCEPTION);
     }

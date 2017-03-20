@@ -44,7 +44,7 @@ class Object {
         if(isset($params) && !is_array($params)){
             $params = array($params);
         }
-	switch(count($params)){
+	    switch(count($params)){
             case 0:
                 return $class->{$method}();
             case 1:

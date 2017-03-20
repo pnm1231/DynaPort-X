@@ -77,8 +77,10 @@ class Hooks {
      * Run a hook
      * 
      * @param string $point Point name
+     * @param array $data Data, if any (optional)
+     * @return bool Successfully executed or not
      */
-    public static function run($point){
+    public static function run($point,$data=array()){
         // Check if the application has defined hooks.
         if(!file_exists(GLBL_FOLDERS_APPLICATION.'/config/hooks.php')){
             return false;
@@ -109,6 +111,12 @@ class Hooks {
 
                     // Check whether the hooked class is available.
                     if(class_exists($hook[2])){
+
+                        // Check whether any data were passed from the point
+                        // If so, override them as Parameters
+                        if(!empty($data)){
+                            $hook[4] = array($data);
+                        }
                         
                         // Check whether the hooked object is already created.
                         // If not, create the object and store it for later use.
@@ -133,7 +141,7 @@ class Hooks {
                         // Check if a method is also defined along with its existence.
                         if(!empty($hook[3]) && method_exists(self::$loadedHooks[$hook[2]],$hook[3])){
                             
-                            // Call the relavant method with parameters if available.
+                            // Call the relevant method with parameters if available.
                             Object::callMethod(self::$loadedHooks[$hook[2]],$hook[3],$hook[4]);
                         }
                     }

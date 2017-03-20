@@ -103,7 +103,7 @@ class View {
             include $file;
             
         }else{
-            new Error('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not available.');
+            new DPxError('Something unavailable was called.',500,'DPX.View.render: \''.$file.'\' is not available.');
         }
         
         // If the $return is true, get the output buffer content and clean it

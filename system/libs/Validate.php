@@ -67,7 +67,7 @@ class Validate {
                 }
             }
         }else{
-            new Error('Validation error',500,'DPX.Libs.Validate.this: Invalid validation type');
+            new DPxError('Validation error',500,'DPX.Libs.Validate.this: Invalid validation type');
         }
     }
 

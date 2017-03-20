@@ -13,16 +13,13 @@ class BlogPostController extends Controller {
         'blog/posts',
         'blog/comments'
     );
-
-    function __construct(){
-        parent::__construct();
-    }
     
     /**
      * Render the header first.
      */
     function doBefore(){
-        $this->view->title = 'Blog Post';
+        $this->view->data['page_title'] = 'Blog Post';
+        
         $this->view->render('common/header');
     }
     
@@ -33,11 +30,11 @@ class BlogPostController extends Controller {
         $posts = $this->model->posts->get();
         $comments = $this->model->comments->get();
         
-        $this->view->id = $id;
-        $this->view->session = $session;
-        $this->view->users = $users;
-        $this->view->posts = $posts;
-        $this->view->comments = $comments;
+        $this->view->data['id'] = $id;
+        $this->view->data['session'] = $session;
+        $this->view->data['users'] = $users;
+        $this->view->data['posts'] = $posts;
+        $this->view->data['comments'] = $comments;
         
         // Render the view
         $this->view->render('blog/single_post');

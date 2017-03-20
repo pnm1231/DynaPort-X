@@ -8,10 +8,6 @@ class CommonIndexController extends Controller {
      * @var array Array of models
      */
     public $models = array('common/session');
-
-    function __construct(){
-        parent::__construct();
-    }
     
     /**
      * Render the header first.
@@ -21,7 +17,7 @@ class CommonIndexController extends Controller {
     }
     
     function public_index(){
-        
+
         // Get DB data through model [Method 1]
         // Since the 'users' model is loaded automatically thanks to: public $models at the top,
         // It is possible to call it as: $this->model->users, where 'users' is the model name.
@@ -32,7 +28,7 @@ class CommonIndexController extends Controller {
         
         // Assign returned data to the view.
         // The view can retrieve the following by using $this->session
-        $this->view->session = $session;
+        $this->view->data['session'] = $session;
         
         // Render the view
         // Unlike when rendering the header, module name is NOT specified here.

@@ -3,7 +3,7 @@
     
     <footer>
         <div id="copyright">
-            Copyright &copy; 2013
+            Copyright &copy; 2017
         </div>
         <div class="note">This view is located at: application/modules/common/views/footer.php</div>
     </footer>

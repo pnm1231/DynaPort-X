@@ -33,7 +33,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.73');
+        header('X-Framework: DynaPort X/2.0.75');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){
@@ -57,7 +57,7 @@ class DynaPortX {
         
         // Check if the URI returned any errors. If so, throw it out.
         if(!empty($uri->error)){
-            new Error('',$uri->error);
+            new DPxError('',$uri->error);
         }
         
         // Start generating the path.
@@ -84,7 +84,7 @@ class DynaPortX {
 
             // Check the availability of the module and throw 404 in case of an error.
             if(!is_dir($path)){
-                new Error('',404,'DPX.DynaPortX.__construct: Module \''.ucwords($uri->module).'\' does not exist.');
+                new DPxError('',404,'DPX.DynaPortX.__construct: Module \''.ucwords($uri->module).'\' does not exist.');
             }
         }
         
@@ -167,7 +167,7 @@ class DynaPortX {
                 }else{
                     
                     //Throw error 404
-                    new Error('',404,'DPX.DynaPortX.__construct: Method \''.$uri->method.'\' does not exist.');
+                    new DPxError('',404,'DPX.DynaPortX.__construct: Method \''.$uri->method.'\' does not exist.');
                 }
                 
                 // Check the availability of 'doAfter' method
@@ -188,13 +188,13 @@ class DynaPortX {
             }else{
             
                 //Throw error 404
-                new Error('',404,'DPX.DynaPortX.__construct: Controller \''.$uri->controller.'\' (class) does not exist.');
+                new DPxError('',404,'DPX.DynaPortX.__construct: Controller \''.$uri->controller.'\' (class) does not exist.');
             }
             
         }else{
             
             //Throw error 404
-            new Error('',404,'DPX.DynaPortX.__construct: Controller \''.$uri->controller.'\' ('.$path.') does not exist.');
+            new DPxError('',404,'DPX.DynaPortX.__construct: Controller \''.$uri->controller.'\' ('.$path.') does not exist.');
         }
         
     }

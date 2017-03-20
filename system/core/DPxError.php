@@ -28,16 +28,16 @@
  * @author      Prasad Nayanajith
  * @link        http://www.dynamiccodes.com/dynaportx/doc/core/error
  */
-class Error {
+class DPxError {
 
     /**
      * Display an error
      * 
      * @param string $message Public error message
      * @param integer $code Error code (404/500)
-     * @param string $realMessage Real error message
+     * @param string $real_message Real error message
      */
-    public function __construct($message=null,$code=0,$realMessage=null){
+    public function __construct($message=null,$code=0,$real_message=null){
         if($code==400){
             $header = '400 Bad Request';
             $message = 'Bad Request';
@@ -50,20 +50,40 @@ class Error {
         if(!headers_sent() && isset($header)){
             header('HTTP/1.1 '.$header);
         }
-        $this->show($message,$realMessage);
+
+        $this->show_modern($code,$message,$real_message);
+
+        exit;
     }
     
     /**
      * Print the error message
      * 
      * @param string $message Public error message
-     * @param string $realMessage Real error message
+     * @param string $real_message Real error message
      */
-    private function show($message,$realMessage){
+    private function show($message,$real_message){
         echo $message.'<br><br>';
-        //echo 'More info: '.Dencrypt::encrypt($realMessage);
-        echo 'More info: '.$realMessage;
-        exit;
+        echo 'More info: '.$real_message;
+    }
+
+    /**
+     * @param string $code Error code
+     * @param string $message Readable message
+     * @param string $real_message Real error message
+     */
+    private function show_modern($code,$message,$real_message){
+        $file = 'application/modules/common/views/error.php';
+
+        if($_SERVER['ENVIRONMENT']=='production'){
+            $real_message = Dencrypt::encrypt($real_message);
+        }
+
+        if(file_exists($file)){
+            require_once $file;
+        }else{
+            $this->show($message,$real_message);
+        }
     }
 
 }

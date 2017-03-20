@@ -1,7 +1,7 @@
 <!doctype HTML>
 <html>
 <head>
-<title><?php echo isset($this->title)?$this->title.' / ':''?>DynaPort X - The PHP MVC framework!</title>
+<title><?=isset($page_title)?$page_title.' / ':''?>DynaPort X - The PHP MVC framework!</title>
 <link type="text/css" rel="stylesheet" href="<?=GLBL_URL?>/static/css/style.css" />
 </head>
 <body>

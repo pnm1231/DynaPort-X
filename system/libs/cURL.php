@@ -54,7 +54,7 @@ class cURL {
     function __construct(){
         // Check if cURL is installed
         if(!function_exists('curl_init')){
-            new Error('Sorry cURL is not installed!');
+            new DPxError('Sorry cURL is not installed!');
         }
         
         // Create a new cURL resource handle
@@ -73,7 +73,7 @@ class cURL {
         if(!empty($url)){
             curl_setopt($this->ch,CURLOPT_URL,$url);
         }else{
-            new Error('Please provide a valid URL.');
+            new DPxError('Please provide a valid URL.');
         }
     }
     
@@ -152,7 +152,7 @@ class cURL {
         if(is_numeric($timeout)){
             curl_setopt($this->ch,CURLOPT_TIMEOUT,$timeout);
         }else{
-            new Error('Timeout should be an integer.');
+            new DPxError('Timeout should be an integer.');
         }
     }
     

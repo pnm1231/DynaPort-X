@@ -45,10 +45,10 @@ class Redirect {
                 header('location: '.$uri);
                 exit;
             }else{
-                new Error('Unable to redirect',500,'DPX.Lib.Redirect.go: Cannot redirect since the header is already sent');
+                new DPxError('Unable to redirect',500,'DPX.Lib.Redirect.go: Cannot redirect since the header is already sent');
             }
         }else{
-            new Error('Unable to redirect',500,'DPX.Lib.Redirect.go: The provided redirect URL is invalid');
+            new DPxError('Unable to redirect',500,'DPX.Lib.Redirect.go: The provided redirect URL is invalid');
         }
     }
 

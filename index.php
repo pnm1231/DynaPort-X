@@ -17,6 +17,18 @@
  * @since      File available since Release 0.2.0
  */
 
+if(!isset($_SERVER['ENVIRONMENT']) && preg_match('@localhost|\.local@',$_SERVER['HTTP_HOST'])){
+    $_SERVER['ENVIRONMENT'] = 'sandbox';
+}else{
+    $_SERVER['ENVIRONMENT'] = 'production';
+}
+
+// In Sandbox environment, display all errors
+if($_SERVER['ENVIRONMENT']!='sandbox'){
+    error_reporting(-1);
+    ini_set('display_errors',1);
+}
+
 // Load global configurations.
 if(file_exists('application/config/global.php')){
     //Load the URL helper in case it's needed.
@@ -28,7 +40,7 @@ if(file_exists('application/config/global.php')){
     die('Error: Global configuration file is not available.');
 }
 
-// Load the class autload helper.
+// Load the class autoload helper.
 if(file_exists('system/helpers/autoload.php')){
     require 'system/helpers/autoload.php';
 }else{

@@ -119,18 +119,27 @@ class Log {
             if(isset(self::$levels[$level])){
                 $levelName = self::$levels[$level];
             }else{
-                new Error('Internal error occurred while logging! (#1)',500,'DPX.Libs.Log.write: Invalid login level defined #1: '.$level);
+                new DPxError('Internal error occurred while logging! (#1)',500,'DPX.Libs.Log.write: Invalid login level defined #1: '.$level);
             }
         }else{
             $levelName = $level;
             if(!array_search(strtoupper($level),self::$levels)){
-                new Error('Internal error occurred while logging! (#2)',500,'DPX.Libs.Log.write: Invalid login level defined #2: '.$level);
+                new DPxError('Internal error occurred while logging! (#2)',500,'DPX.Libs.Log.write: Invalid login level defined #2: '.$level);
             }
         }
         
         if(empty($message)){
-            new Error('Internal error occurred while logging! (#3)',500,'DPX.Libs.Log.write: No message was given');
+            new DPxError('Internal error occurred while logging! (#3)',500,'DPX.Libs.Log.write: No message was given');
         }
+
+        $data = array(
+            'timestamp' => time(),
+            'datestamp' => date('Y-m-d h:i:s A'),
+            'module'    => Registry::get('dpx_module'),
+            'controller'=> Registry::get('dpx_controller'),
+            'message'   => $message,
+            'stack'     => json_encode($stack)
+        );
         
         $folder = 'application/logs/';
         $fileName = 'log_'.$level.'_'.date('Y-m-d').'_';
@@ -149,16 +158,18 @@ class Log {
         $fp = fopen($file,'a+');
         
         $logContent = "--------------------------------------------------\n";
-        $logContent.= "timestamp\t: ".time()."\n";
-        $logContent.= "date/time\t: ".date('Y-m-d h:i:s A')."\n";
-        $logContent.= "module\t\t: ".Registry::get('dpx_module')."\n";
-        $logContent.= "controller\t: ".Registry::get('dpx_controller')."\n";
-        $logContent.= "message\t\t:\n{$message}\n";
-        $logContent.= "stack\t\t:\n".json_encode($stack)."\n";
+        $logContent.= "timestamp\t: ".$data['timestamp']."\n";
+        $logContent.= "date/time\t: ".$data['datestamp']."\n";
+        $logContent.= "module\t\t: ".$data['module']."\n";
+        $logContent.= "controller\t: ".$data['controller']."\n";
+        $logContent.= "message\t\t:\n".$data['message']."\n";
+        $logContent.= "stack\t\t:\n".$data['stack']."\n";
         $logContent.= "--------------------------------------------------\n";
         
         fwrite($fp,$logContent);
         fclose($fp);
+        
+        Hooks::run('dpx_post_log',$data);
         
         return true;
     }

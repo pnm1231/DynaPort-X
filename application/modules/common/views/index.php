@@ -11,6 +11,6 @@
         <a href="<?=GLBL_URL?>/blog">Go to blog</a>
         
         <h3>Session</h3>
-        <?php print_r($this->session) ?>
+        <?php print_r($session) ?>
         
         <div class="note">This view is located at: application/modules/common/views/index.php</div>

@@ -41,7 +41,7 @@ function __autoload($class_name){
     }
     
     if(class_exists('Error',false)){
-        new Error('Something non-existing was called',500,"DPX.Helpers.__autoload: The class {$class_name} does not exists");
+        new DPxError('Something non-existing was called',500,"DPX.Helpers.__autoload: The class {$class_name} does not exists");
     }else{
         die("Error: The class {$class_name} does not exists");
     }
