@@ -18,7 +18,7 @@
  */
 
 function dynaportx_error_handler($errno,$errstr,$errfile,$errline){
-    DPxError(null,500,"$errstr\n$errno\n$errfile\n$errline");
+    new DPxError(null,500,"$errstr\n$errno\n$errfile\n$errline");
 }
 set_error_handler('dynaportx_error_handler');
 
