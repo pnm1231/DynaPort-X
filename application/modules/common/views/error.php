@@ -13,7 +13,7 @@
             <p>You may go back to the <a href="<?=GLBL_URL?>">home page</a>.</p>
         <?php }else{ ?>
             <p>We'll get this fixed as soon as possible. If you need to you can always contact us or else try going back to the <a href="<?=GLBL_URL?>">home page</a>.</p>
-            <p class="small">More info: <?=$real_message?></p>
+            <p class="small" style="word-break:break-all">More info: <?=$real_message?></p>
         <?php } ?>
     </div>
 </article>
