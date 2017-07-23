@@ -62,6 +62,13 @@ class Model {
         }
     }
 
-}
+    /**
+     * Get the last inserted ID
+     *
+     * @return string Last inserted ID
+     */
+    function last_id(){
+        return $this->db->lastInsertId();
+    }
 
-?>
+}
