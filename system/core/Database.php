@@ -165,9 +165,9 @@ class Database extends PDO {
         $column = str_replace('.','`.`',$column);
         $count = isset($this->_qbQuery['where'])?count($this->_qbQuery['where']):0;
 
-        // IN operator
-        if(strtolower($operator)=='in'){
-            $operator = ' IN ';
+        // IN and NOT IN operator
+        if(strtolower($operator)=='in' || strtolower($operator)=='not in'){
+            $operator = ' '.strtoupper($operator).' ';
             $value_key = '(';
             if(is_array($value) && count($value)>0){
                 foreach($value AS $k=>$v){
