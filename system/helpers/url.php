@@ -21,10 +21,12 @@
  * Guess the base URL
  */
 function guess_base_url(){
-    $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off')?'https':'http';
+    if(isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && !empty($_SERVER['HTTP_X_FORWARDED_PROTO'])){
+        $protocol = $_SERVER['HTTP_X_FORWARDED_PROTO'];
+    }else{
+        $protocol = (isset($_SERVER['HTTPS']) && $_SERVER['HTTPS']!='off')?'https':'http';
+    }
     $host = $_SERVER['HTTP_HOST'];
     $path = preg_replace('@/index.php$@','',$_SERVER['PHP_SELF']);
     return $protocol.'://'.$host.$path;
 }
-
-?>
