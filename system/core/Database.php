@@ -61,7 +61,7 @@ class Database extends PDO {
     /**
      * PDO Fetch Mode
      *
-     * @var constant
+     * @var int
      */
     private $_gbFetchMode = PDO::FETCH_ASSOC;
 
@@ -125,7 +125,7 @@ class Database extends PDO {
         }
         if(preg_match('@(\(|as)@i',$select)){
             $select = preg_replace('@\ AS ([a-z0-9_-]+)`@i','` AS `$1`',$select);
-            $select = preg_replace('@`([a-z]+)\((|[a-z0-9_*-]+)\)([^`]?)`@i','$1(`$2`)$3',$select);
+            $select = preg_replace('@`([a-z]+)\((|[a-z0-9_*-.]+)\)([^`]?)`@i','$1(`$2`)$3',$select);
         }
         $select = str_replace('.','`.`',$select);
         $select = str_replace('`SQL_CALC_FOUND_ROWS ','SQL_CALC_FOUND_ROWS `',$select);
@@ -336,7 +336,6 @@ class Database extends PDO {
             // Check whether an array was provided (multiple fields)
             if(is_array($column) && count($column)>0){
                 $orderArr = '';
-                $type = '';
                 foreach($column AS $col=>$ord){
                     $orderArr[] = '`'.$col.'` '.strtoupper($ord);
                 }
@@ -457,7 +456,8 @@ class Database extends PDO {
     /**
      * Execute the query
      *
-     * @return \Database
+     * @return \Database|bool
+     * @throws Exception
      */
     function run(){
         switch($this->_qbType){
@@ -631,7 +631,7 @@ class Database extends PDO {
      *
      * @param string $sql An SQL string
      * @param array $array Paramters to bind
-     * @param constant $fetchMode A PDO Fetch mode
+     * @param int $fetchMode A PDO Fetch mode
      * @return mixed An array with results
      */
     public function select_raw($sql,$array=array(),$fetchMode=PDO::FETCH_ASSOC){
@@ -654,8 +654,9 @@ class Database extends PDO {
      * @param array $array An associative array of data for WHERE
      * @param array $order Order by (field name, type)
      * @param mixed $limit Limit
-     * @param constant $fetchMode A PDO Fetch mode
+     * @param int $fetchMode A PDO Fetch mode
      * @return mixed An array with results
+     * @deprecated
      */
     public function select_extend($fields,$table,$array=array(),$group=array(),$order=array(),$limit=0,$fetchMode=PDO::FETCH_ASSOC){
         $sql = "SELECT {$fields} FROM {$table}";
@@ -724,6 +725,7 @@ class Database extends PDO {
      * @param string $table A name of table to insert into
      * @param array $data An associative array
      * @return bool true/false
+     * @deprecated
      */
     public function insert_extend($table,$data){
         $fieldNames = implode('`, `',array_keys($data));
@@ -748,6 +750,7 @@ class Database extends PDO {
      * @param array $data An associative array of data to be modified
      * @param mixed $where An associative array or the WHERE query part
      * @return bool true/false
+     * @deprecated
      */
     public function update_extend($table,$data,$where=array()){
 
@@ -800,6 +803,7 @@ class Database extends PDO {
      * @param string $where An associative array of data for WHERE
      * @param integer $limit Limit results
      * @return integer Affected rows
+     * @deprecated
      */
     public function delete_extend($table,$where,$limit=1){
 
@@ -843,5 +847,3 @@ class Database extends PDO {
     }
 
 }
-
-?>
