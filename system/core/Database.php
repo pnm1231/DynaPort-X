@@ -335,7 +335,7 @@ class Database extends PDO {
         }else{
             // Check whether an array was provided (multiple fields)
             if(is_array($column) && count($column)>0){
-                $orderArr = '';
+                $orderArr = array();
                 foreach($column AS $col=>$ord){
                     $orderArr[] = '`'.$col.'` '.strtoupper($ord);
                 }
