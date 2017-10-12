@@ -159,17 +159,18 @@ class cURL {
     /**
      * Should the SSL certificates be Verified?
      *
-     * @param boolean $sslverify true/false
+     * @param boolean $ssl_verify true/false
      */
-    function setSslVerify($sslverify=1){
-        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER,$sslverify);
+    function setSslVerify($ssl_verify=1){
+        curl_setopt($this->ch, CURLOPT_SSL_VERIFYPEER,$ssl_verify);
+        curl_setopt($this->ch, CURLOPT_SSL_VERIFYHOST,$ssl_verify);
     }
     
     /**
      * Set a cURL option
      * 
-     * @param string option
-     * @param string value
+     * @param string $key option
+     * @param string $value value
      */
     function set($key,$value){
         curl_setopt($this->ch,$key,$value);
@@ -263,7 +264,9 @@ class cURL {
      */
     private static function simpleRequest($type,$url,$parameters=array()){
         $curl = new cURL();
+
         $curl->setUrl($url);
+
         if($type=='post'){
             $curl->setHttpPost($parameters);
         }else if($type=='put'){
@@ -271,8 +274,15 @@ class cURL {
         }else if($type=='put'){
             $curl->setHttpDelete($parameters);
         }
+
+        if($_SERVER['ENVIRONMENT']=='sandbox'){
+            $curl->setSslVerify(0);
+        }
+
         $output = $curl->output();
+
         self::$errorStatic = $curl->error;
+
         return $output;
     }
 
