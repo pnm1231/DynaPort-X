@@ -76,7 +76,7 @@ class Session {
      * Retrieve an existing session
      * 
      * @param string $key The name of the session
-     * @return mixed Date of the session
+     * @return mixed Data assigned to the session key
      */
     public static function get($key){
         // Check whether the session has started already. If not, start it.
@@ -86,6 +86,8 @@ class Session {
         
         if(isset(self::$data[$key])){
             return self::$data[$key];
+        }else{
+            return false;
         }
     }
     
@@ -93,7 +95,6 @@ class Session {
      * Delete a session
      * 
      * @param string $key The name of the session
-     * @return boolean True/false
      */
     public static function delete($key){
         // Check whether the session has started already. If not, start it.
@@ -104,7 +105,6 @@ class Session {
         if(isset(self::$data[$key])){
             unset(self::$data[$key]);
         }
-        return true;
     }
 
 }

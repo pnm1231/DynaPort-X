@@ -34,14 +34,18 @@ class Redirect {
      * Redirect to a specific URL
      * 
      * @param string $uri The URL or the Path
+     * @param boolean $permanent The type of redirect
      */
-    public static function go($uri){
+    public static function go($uri,$permanent=false){
         if(!preg_match('/^(http|https)\:/',$uri)){
             $uri = ltrim($uri,'/');
             $uri = GLBL_URL.'/'.$uri;
         }
         if(!empty($uri) && filter_var($uri,FILTER_SANITIZE_URL)){
             if(!headers_sent()){
+                if($permanent){
+                    header('HTTP/1.1 301 Moved Permanently');
+                }
                 header('location: '.$uri);
                 exit;
             }else{
