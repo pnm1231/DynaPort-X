@@ -1,14 +1,8 @@
 <?php
 
-/**
- * Error reporting.
- */
-error_reporting(E_ALL); // Development level
-//error_reporting(E_STRICT); // Pre-production (testing) level
-//error_reporting(E_ALL ^ E_WARNING ^ E_NOTICE); // Production level
-
-
-
+/***************
+ * Sandbox Configurations
+ ***************/
 
 /***************
  * DATABASE

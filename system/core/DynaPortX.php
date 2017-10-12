@@ -33,7 +33,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.83');
+        header('X-Framework: DynaPort X/2.0.84');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){
@@ -114,13 +114,13 @@ class DynaPortX {
             require_once $path.'.php';
 
             // Generate the controller class name.
-            $classname = ucfirst($uri->module);
-            $classname.= ucfirst($uri->controller);
-            $classname.= 'Controller';
+            $class_name = ucfirst($uri->module);
+            $class_name.= ucfirst($uri->controller);
+            $class_name.= 'Controller';
             
             // Check the availability of the controller.
             // Throw error 404 if not available.
-            if(class_exists($classname,false)){
+            if(class_exists($class_name,false)){
 
                 // Check whether Hooks are enabled.
                 if(GLBL_ENABLE_HOOKS==true){
@@ -130,7 +130,7 @@ class DynaPortX {
                 }
 
                 // Create the controller object.
-                $controller = new $classname;
+                $controller = new $class_name;
                 
                 // Check the availability of 'doBefore' method
                 if(method_exists($controller,'doBefore')){

@@ -10,7 +10,7 @@
 if(isset($_SERVER['ENVIRONMENT']) && $_SERVER['ENVIRONMENT']=='sandbox'){
     require_once __DIR__.'/global.sandbox.php';
 }else{
-    require_once __DIR__.'/global.live.php';
+    require_once __DIR__.'/global.production.php';
 }
 
 /**
