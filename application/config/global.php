@@ -14,7 +14,7 @@ if(isset($_SERVER['ENVIRONMENT']) && $_SERVER['ENVIRONMENT']=='sandbox'){
 }
 
 /**
- * The URL which can be accessed to framwork's main file index.php
+ * The URL which can be accessed to framework's main file index.php
  * DO NOT add a trailing slash.
  */
 define('GLBL_URL',guess_base_url());

@@ -4,6 +4,23 @@
  * Sandbox Configurations
  ***************/
 
+
+
+
+/***************
+ * GLOBAL
+ ***************/
+
+/**
+ * The path to store error logs
+ * ADD a trailing slash
+ * Default: application/logs/
+ */
+#define('GLBL_PATH_LOGS','');
+
+
+
+
 /***************
  * DATABASE
  ***************/

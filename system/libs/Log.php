@@ -141,7 +141,12 @@ class Log {
             'stack'     => json_encode($stack)
         );
         
-        $folder = 'application/logs/';
+        if(defined('GLBL_PATH_LOGS')){
+            $folder = GLBL_PATH_LOGS;
+        }else{
+            $folder = 'application/logs/';
+        }
+        
         $fileName = 'log_'.$level.'_'.date('Y-m-d').'_';
         $fileIncrement = str_pad(1,4,0,STR_PAD_LEFT);
         $fileType = '.log';
