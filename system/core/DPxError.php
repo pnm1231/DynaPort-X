@@ -51,6 +51,10 @@ class DPxError {
             header('HTTP/1.1 '.$header);
         }
 
+        if($code!=404){
+            Log::error($real_message);
+        }
+
         $this->show_modern($code,$message,$real_message);
 
         exit;
