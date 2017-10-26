@@ -147,7 +147,7 @@ class Log {
             $folder = 'application/logs/';
         }
         
-        $fileName = 'log_'.$level.'_'.date('Y-m-d').'_';
+        $fileName = 'log_'.$levelName.'_'.date('Y-m-d').'_';
         $fileIncrement = str_pad(1,4,0,STR_PAD_LEFT);
         $fileType = '.log';
         
@@ -157,7 +157,7 @@ class Log {
         
         do {
             $file = $folder.$fileName.$fileIncrement.$fileType;
-            $fileIncrement = str_pad($fileIncrement+1,4,0,STR_PAD_LEFT);
+            $fileIncrement = str_pad((int)$fileIncrement+1,4,0,STR_PAD_LEFT);
         }while(file_exists($file) && filesize($file)>=102400);
         
         $fp = fopen($file,'a+');
