@@ -254,7 +254,7 @@ class Loader {
         $name = preg_replace('@([^A-z0-9\/-])@','',$name);
 
         // Start building the file path.
-        $file = GLBL_FOLDERS_APPLICATION.'/';
+        $file = GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/';
 
         // Check if a library is requested.
         if($component=='library'){

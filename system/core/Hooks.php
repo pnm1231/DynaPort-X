@@ -81,13 +81,14 @@ class Hooks {
      * @return bool Successfully executed or not
      */
     public static function run($point,$data=array()){
+        $file = GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/config/hooks.php';
         // Check if the application has defined hooks.
-        if(!file_exists(GLBL_FOLDERS_APPLICATION.'/config/hooks.php')){
+        if(!file_exists($file)){
             return false;
         }
         
         // Include hook definitions.
-        require_once GLBL_FOLDERS_APPLICATION.'/config/hooks.php';
+        require_once $file;
         
         // If there are no hooks defined, return false
         if(empty(self::$hooks) || empty(self::$hooks[$point])){
@@ -103,7 +104,7 @@ class Hooks {
             // Go through hooks.
             foreach($hooks AS $hook){
                 
-                $hook_file = GLBL_FOLDERS_APPLICATION.'/'.rtrim($hook[0],'/').'/'.$hook[1].'.php';
+                $hook_file = GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/'.rtrim($hook[0],'/').'/'.$hook[1].'.php';
                 
                 if(file_exists($hook_file)){
                     

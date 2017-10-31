@@ -33,7 +33,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.89');
+        header('X-Framework: DynaPort X/2.0.90');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){
@@ -48,8 +48,8 @@ class DynaPortX {
         }
 
         // Include routing rules if available.
-        if(file_exists(GLBL_FOLDERS_APPLICATION.'/config/routes.php')){
-            require GLBL_FOLDERS_APPLICATION.'/config/routes.php';
+        if(file_exists(GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/config/routes.php')){
+            require GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/config/routes.php';
         }
         
         // Call the URI library to break down the URL into sections.
@@ -61,7 +61,7 @@ class DynaPortX {
         }
         
         // Start generating the path.
-        $path = GLBL_FOLDERS_APPLICATION.'/';
+        $path = GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/';
         
         // Check whether the app is modularized.
         if(GLBL_MODULARIZED==true){

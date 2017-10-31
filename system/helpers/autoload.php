@@ -21,15 +21,15 @@
  * Auto load classes
  * 
  * @param string $class_name Name of the class
- * @param bool $no_error Show an error when there is no match
+ * @return true If successfully loaded
  */
 function __autoload($class_name){
     
     // List possibilities while prioritizing them
     $possibilities = array(
-        'system/core/'.$class_name.'.php',
-        'system/libs/'.$class_name.'.php',
-        GLBL_FOLDERS_APPLICATION.'/libs/'.$class_name.'.php'
+        GLBL_PATH.'/system/core/'.$class_name.'.php',
+        GLBL_PATH.'/system/libs/'.$class_name.'.php',
+        GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/libs/'.$class_name.'.php'
     );
     
     // Loop through possibilities; break and require when there is a match

@@ -32,27 +32,30 @@ if($_SERVER['ENVIRONMENT']=='sandbox'){
     ini_set('display_errors',0);
 }
 
+// Take the current directory path as the global path for all includes
+define('GLBL_PATH',__DIR__);
+
 // Load global configurations.
-if(file_exists('application/config/global.php')){
+if(file_exists(GLBL_PATH.'/application/config/global.php')){
     //Load the URL helper in case it's needed.
-    if(file_exists('system/helpers/url.php')){
-        require 'system/helpers/url.php';
+    if(file_exists(GLBL_PATH.'/system/helpers/url.php')){
+        require GLBL_PATH.'/system/helpers/url.php';
     }
-    require 'application/config/global.php';
+    require GLBL_PATH.'/application/config/global.php';
 }else{
     die('Error: Global configuration file is not available.');
 }
 
 // Load the class autoload helper.
-if(file_exists('system/helpers/autoload.php')){
-    require 'system/helpers/autoload.php';
+if(file_exists(GLBL_PATH.'/system/helpers/autoload.php')){
+    require GLBL_PATH.'/system/helpers/autoload.php';
 }else{
     die('Error: Auto-load helper is not available.');
 }
 
 // Load the exception handle helper.
-if(file_exists('system/helpers/exceptions.php')){
-    require 'system/helpers/exceptions.php';
+if(file_exists(GLBL_PATH.'/system/helpers/exceptions.php')){
+    require GLBL_PATH.'/system/helpers/exceptions.php';
 }else{
     die('Error: Exception helper is not available.');
 }

@@ -77,7 +77,7 @@ class DPxError {
      * @param string $real_message Real error message
      */
     private function show_modern($code,$message,$real_message){
-        $file = 'application/modules/common/views/error.php';
+        $file = GLBL_PATH.'/'.GLBL_FOLDERS_APPLICATION.'/modules/common/views/error.php';
 
         if($_SERVER['ENVIRONMENT']=='production'){
             $real_message = Dencrypt::encrypt($real_message);
