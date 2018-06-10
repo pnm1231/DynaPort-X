@@ -1,27 +1,29 @@
 <?php
 
 /**
- * DynaPort X
+ * DynaPort X.
  *
  * A simple yet powerful PHP framework for rapid application development.
  *
  * Licensed under BSD license
- * 
+ *
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  *
- * @package    DynaPort X
  * @copyright  Copyright (c) 2012-2013 DynamicCodes.com (http://www.dynamiccodes.com/dynaportx)
  * @license    http://www.dynamiccodes.com/dynaportx/license   BSD License
+ *
  * @link       http://www.dynamiccodes.com/dynaportx
  * @since      File available since Release 0.2.0
  */
 
 /**
- * Registry Class
+ * Registry Class.
  *
  * @author              JREAM
+ *
  * @link                http://jream.com
+ *
  * @copyright           2011 Jesse Boyer (contact@jream.com)
  * @license             GNU General Public License 3 (http://www.gnu.org/licenses/)
  *
@@ -35,67 +37,72 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details:
  * http://www.gnu.org/licenses/
-*/
+ */
 
 /**
- * Registry Class
+ * Registry Class.
  *
  * The registry class which passes data throughtout the framework.
  *
- * @package     DynaPort X
- * @subpackage  Core
  * @category    Core
+ *
  * @author      Prasad Nayanajith
+ *
  * @link        http://www.dynamiccodes.com/dynaportx/doc/core/registry
  */
-class Registry{
-    
+class Registry
+{
     /**
-     * Stored records
-     * 
+     * Stored records.
+     *
      * @var array
      */
-    private static $_record = array();
+    private static $_record = [];
 
-    /** 
-     * set - Places an item inside the registry record
-     * 
-     * @param string $key The name of the item
-     * @param mixed &$item The item to reference
-     * @return boolean
+    /**
+     * set - Places an item inside the registry record.
+     *
+     * @param string $key   The name of the item
+     * @param mixed  &$item The item to reference
+     *
+     * @return bool
      */
-    public static function set($key, &$item){
+    public static function set($key, &$item)
+    {
         self::$_record[$key] = &$item;
     }
 
     /**
-     * get - Gets an item out of the registry
-     * 
+     * get - Gets an item out of the registry.
+     *
      * @param string $key The name of the item
-     * @return boolean
+     *
+     * @return bool
      */
-    public static function get($key){
-        if(isset(self::$_record[$key])){
+    public static function get($key)
+    {
+        if (isset(self::$_record[$key])) {
             return self::$_record[$key];
-        }else{
+        } else {
             return false;
         }
     }
-    
+
     /**
-     * delete - Delete an item from the registry
-     * 
+     * delete - Delete an item from the registry.
+     *
      * @param string $key The name of the item
-     * @return boolean
+     *
+     * @return bool
      */
-    public static function delete($key){
-        if(isset(self::$_record[$key])){
+    public static function delete($key)
+    {
+        if (isset(self::$_record[$key])) {
             unset(self::$_record[$key]);
+
             return true;
-        }else{
+        } else {
             return false;
         }
     }
 }
-
-?>
