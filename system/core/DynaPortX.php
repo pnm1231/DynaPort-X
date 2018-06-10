@@ -33,7 +33,7 @@ class DynaPortX {
     function __construct(){
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.90');
+        header('X-Framework: DynaPort X/2.0.91');
         
         // Auto-start session if it is required.
         if(GLBL_AUTOSTART_SESSION==true){
@@ -136,7 +136,7 @@ class DynaPortX {
                 if(method_exists($controller,'doBefore')){
                     
                     // Call the 'doBefore' method along with parameters if available.
-                    Object::callMethod($controller,'doBefore',$uri->params);
+                    BaseObject::callMethod($controller,'doBefore',$uri->params);
                     
                 }
 
@@ -157,12 +157,12 @@ class DynaPortX {
                 if(method_exists($controller,strtolower($_SERVER['REQUEST_METHOD']).'_'.$uri->method)){
                     
                     // Call the request type's method along with parameters if available.
-                    Object::callMethod($controller,strtolower($_SERVER['REQUEST_METHOD']).'_'.$uri->method,$uri->params);
+                    BaseObject::callMethod($controller,strtolower($_SERVER['REQUEST_METHOD']).'_'.$uri->method,$uri->params);
                     
                 }else if(method_exists($controller,'public_'.$uri->method)){
                     
                     // Call the 'public' method along with parameters if available.
-                    Object::callMethod($controller,'public_'.$uri->method,$uri->params);
+                    BaseObject::callMethod($controller,'public_'.$uri->method,$uri->params);
                     
                 }else{
                     
@@ -174,7 +174,7 @@ class DynaPortX {
                 if(method_exists($controller,'doAfter')){
                     
                     // Call the 'doAfter' method along with parameters if available.
-                    Object::callMethod($controller,'doAfter',$uri->params);
+                    BaseObject::callMethod($controller,'doAfter',$uri->params);
                     
                 }
 
@@ -200,5 +200,3 @@ class DynaPortX {
     }
 
 }
-
-?>

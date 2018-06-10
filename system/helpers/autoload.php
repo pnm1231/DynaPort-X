@@ -23,7 +23,7 @@
  * @param string $class_name Name of the class
  * @return true If successfully loaded
  */
-function __autoload($class_name){
+function __autoload_classes($class_name){
     
     // List possibilities while prioritizing them
     $possibilities = array(
@@ -40,11 +40,11 @@ function __autoload($class_name){
         }
     }
     
-    if(class_exists('Error',false)){
+    if(class_exists('DPxError',false)){
         new DPxError('Something non-existing was called',500,"DPX.Helpers.__autoload: The class {$class_name} does not exists");
     }else{
         die("Error: The class {$class_name} does not exists");
     }
 }
 
-?>
+spl_autoload_register('__autoload_classes');

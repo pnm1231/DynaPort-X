@@ -143,7 +143,7 @@ class Hooks {
                         if(!empty($hook[3]) && method_exists(self::$loadedHooks[$hook[2]],$hook[3])){
                             
                             // Call the relevant method with parameters if available.
-                            Object::callMethod(self::$loadedHooks[$hook[2]],$hook[3],$hook[4]);
+                            BaseObject::callMethod(self::$loadedHooks[$hook[2]],$hook[3],$hook[4]);
                         }
                     }
                 }

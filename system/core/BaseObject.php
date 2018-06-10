@@ -28,7 +28,7 @@
  * @author      Prasad Nayanajith
  * @link        http://www.dynamiccodes.com/dynaportx/doc/core/object
  */
-class Object {
+class BaseObject {
     
     /**
      * Call to a method of a class
@@ -38,11 +38,15 @@ class Object {
      * @param string $class Class name
      * @param string $method Method to call
      * @param array $params List of parameters
-     * @return \Object
+     * @return \BaseObject
      */
     public static function callMethod(&$class,$method,$params=array()){
-        if(isset($params) && !is_array($params)){
-            $params = array($params);
+        if(isset($params)){
+            if(!is_array($params)){
+                $params = array($params);
+            }
+        }else{
+            $params = array();
         }
 	    switch(count($params)){
             case 0:
@@ -61,5 +65,3 @@ class Object {
     }
     
 }
-
-?>
