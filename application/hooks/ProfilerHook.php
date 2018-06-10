@@ -1,16 +1,19 @@
 <?php
 
-class ProfilerHook {
-
-    function start($component='general'){
+class ProfilerHook
+{
+    public function start($component = 'general')
+    {
         Profiler::timerStart($component);
     }
-    
-    function stop($component='general'){
+
+    public function stop($component = 'general')
+    {
         Profiler::timerStop($component);
     }
-    
-    function display(){
+
+    public function display()
+    {
         echo '<hr>';
         echo 'Controller : ';
         Profiler::timerDisplay('controller');
@@ -24,7 +27,4 @@ class ProfilerHook {
         echo 'Files : <pre>';
         print_r(get_included_files());
     }
-
 }
-
-?>
