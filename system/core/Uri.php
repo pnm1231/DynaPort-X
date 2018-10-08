@@ -190,9 +190,8 @@ class Uri
      */
     public static function currentUri()
     {
-        $url = self::currentURL();
 
-        return str_replace(GLBL_URL.'/', '', strtok($url, '?'));
+        return rtrim(ltrim(strtok($_SERVER['REQUEST_URI'],'?'),'/'),'/');
     }
 
     /**
