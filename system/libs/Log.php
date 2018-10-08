@@ -24,7 +24,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function debug($message, $stack = null)
     {
@@ -37,7 +37,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function info($message, $stack = null)
     {
@@ -50,7 +50,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function notice($message, $stack = null)
     {
@@ -63,7 +63,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function warning($message, $stack = null)
     {
@@ -76,7 +76,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function error($message, $stack = null)
     {
@@ -89,7 +89,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function critical($message, $stack = null)
     {
@@ -102,7 +102,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function alert($message, $stack = null)
     {
@@ -115,7 +115,7 @@ class Log
      * @param string $message Message to log
      * @param array  $stack   Stack of the exception
      *
-     * @return boolean
+     * @return bool
      */
     public static function emergency($message, $stack = null)
     {
@@ -129,7 +129,7 @@ class Log
      * @param string $message Message
      * @param array  $stack
      *
-     * @return boolean
+     * @return bool
      */
     public static function write($level, $message, $stack = null)
     {
