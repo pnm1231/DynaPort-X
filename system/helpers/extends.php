@@ -1,6 +1,6 @@
 <?php
 
-/**
+/*
  * DynaPort X.
  *
  * A simple yet powerful PHP framework for rapid application development.

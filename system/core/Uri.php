@@ -190,8 +190,7 @@ class Uri
      */
     public static function currentUri()
     {
-
-        return rtrim(ltrim(strtok($_SERVER['REQUEST_URI'],'?'),'/'),'/');
+        return rtrim(ltrim(strtok($_SERVER['REQUEST_URI'], '?'), '/'), '/');
     }
 
     /**
