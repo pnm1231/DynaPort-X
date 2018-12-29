@@ -43,14 +43,14 @@ class Redirect
             $uri = GLBL_URL.'/'.$uri;
         }
         if (!empty($uri) && filter_var($uri, FILTER_SANITIZE_URL)) {
-            if (!headers_sent()) {
+            if (!headers_sent($file, $line)) {
                 if ($permanent) {
                     header('HTTP/1.1 301 Moved Permanently');
                 }
                 header('location: '.$uri);
                 exit;
             } else {
-                new DPxError('Unable to redirect', 500, 'DPX.Lib.Redirect.go: Cannot redirect since the header is already sent');
+                new DPxError('Unable to redirect', 500, 'DPX.Lib.Redirect.go: Cannot redirect since the header is already sent in '.$file.' on line '.$line);
             }
         } else {
             new DPxError('Unable to redirect', 500, 'DPX.Lib.Redirect.go: The provided redirect URL is invalid');

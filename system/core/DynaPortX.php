@@ -34,7 +34,7 @@ class DynaPortX
     {
 
         // Give credit ;)
-        header('X-Framework: DynaPort X/2.0.92');
+        header('X-Framework: DynaPort X/2.0.93');
 
         // Auto-start session if it is required.
         if (GLBL_AUTOSTART_SESSION == true) {
